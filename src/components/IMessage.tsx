@@ -81,14 +81,15 @@ export default function IMessage() {
   const [activeChat, setActiveChat] = useState<number | null>(3);
   const [messages, setMessages] = useState(INITIAL_MESSAGES);
   const [inputText, setInputText] = useState('');
-  const chatBottomRef = useRef<HTMLDivElement>(null);
+  const chatScrollRef = useRef<HTMLDivElement>(null);
 
   const chatData = INITIAL_CHATS.find(c => c.id === activeChat);
   const currentMessages = activeChat ? messages[activeChat] || [] : [];
 
   useEffect(() => {
     if (activeChat) {
-      chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+      const chatScroll = chatScrollRef.current;
+      chatScroll?.scrollTo({ top: chatScroll.scrollHeight, behavior: 'smooth' });
     }
   }, [activeChat, messages]);
 
@@ -203,7 +204,7 @@ export default function IMessage() {
           </div>
           
           {/* Area Chat Bubbles */}
-          <div className="flex-1 overflow-y-auto px-3.5 py-3 flex flex-col gap-[3px]">
+          <div ref={chatScrollRef} className="flex-1 overflow-y-auto px-3.5 py-3 flex flex-col gap-[3px]">
             {currentMessages.map((msg, index) => {
               const isMe = msg.sender === 'me';
               const isNextSame = currentMessages[index + 1]?.sender === msg.sender;
@@ -249,7 +250,6 @@ export default function IMessage() {
                 </div>
               );
             })}
-            <div ref={chatBottomRef} />
           </div>
 
           {/* Area Input Pesan di Bawah */}

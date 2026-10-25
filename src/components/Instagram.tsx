@@ -54,7 +54,7 @@ export default function Instagram() {
       {/* TAMPILAN 1: BERANDA FEED (SESUAI SCREENSHOT 1) */}
       {/* ======================================================== */}
       {currentTab === 'feed' && (
-        <div className="flex flex-1 flex-col overflow-y-auto no-scrollbar pt-[44px] pb-[88px]">
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-y-contain no-scrollbar pt-[44px] pb-[88px]">
           
           {/* Header Instagram Terbaru */}
           <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100">
@@ -219,7 +219,7 @@ export default function Instagram() {
       {/* TAMPILAN 2: PROFIL @OWNERSAHI (SESUAI SCREENSHOT 2) */}
       {/* ======================================================== */}
       {currentTab === 'profile' && (
-        <div className="flex flex-1 flex-col overflow-y-auto no-scrollbar pt-[44px] pb-[88px]">
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-y-contain no-scrollbar pt-[44px] pb-[88px]">
           
           {/* Header Profil */}
           <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100">

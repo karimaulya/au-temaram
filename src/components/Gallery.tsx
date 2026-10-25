@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 
 export interface GalleryPhoto {
   id: number;
@@ -47,23 +47,33 @@ export default function Gallery() {
   const [showInfo, setShowInfo] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
+  const shouldPositionSlider = useRef(false);
 
   // Daftar rata semua foto untuk carousel viewer
-  const allPhotos = sections.flatMap(s => s.photos);
+  const allPhotos = useMemo(() => sections.flatMap(s => s.photos), [sections]);
   const selectedPhoto = allPhotos.find(p => p.id === selectedPhotoId) || null;
 
   // Auto-scroll ke foto terpilih saat pratinjau pertama kali dibuka
   useEffect(() => {
-    if (selectedPhotoId !== null && sliderRef.current) {
-      const idx = allPhotos.findIndex(p => p.id === selectedPhotoId);
-      if (idx !== -1) {
-        sliderRef.current.scrollTo({
-          left: idx * sliderRef.current.clientWidth,
-          behavior: 'auto'
-        });
-      }
+    if (!shouldPositionSlider.current || selectedPhotoId === null || !sliderRef.current) {
+      return;
     }
-  }, [selectedPhotoId]);
+
+    shouldPositionSlider.current = false;
+    const idx = allPhotos.findIndex(p => p.id === selectedPhotoId);
+    if (idx !== -1) {
+      sliderRef.current.scrollTo({
+        left: idx * sliderRef.current.clientWidth,
+        behavior: 'auto'
+      });
+    }
+  }, [allPhotos, selectedPhotoId]);
+
+  const openPhoto = (id: number) => {
+    shouldPositionSlider.current = true;
+    setSelectedPhotoId(id);
+    setShowInfo(false);
+  };
 
   const toggleFavorite = (id: number, e?: React.MouseEvent) => {
     e?.stopPropagation();
@@ -154,7 +164,7 @@ export default function Gallery() {
                       {section.photos.map((photo) => (
                         <button
                           key={photo.id}
-                          onClick={() => { setSelectedPhotoId(photo.id); setShowInfo(false); }}
+                          onClick={() => openPhoto(photo.id)}
                           className="group relative aspect-square overflow-hidden bg-[#eee] cursor-pointer active:opacity-75 transition-opacity"
                         >
                           <img
@@ -246,7 +256,7 @@ export default function Gallery() {
         </div>
       ) : (
         // ==========================================
-        // TAMPILAN 2: PRATINJAU FOTO LIGHT MODE (HORIZONTAL SCROLL / SWIPE BEBAS TANPA TOMBOL)
+        // TAMPILAN 2: PRATINJAU FOTO LAYAR PENUH (SWIPE HORIZONTAL)
         // ==========================================
         <div className="absolute inset-0 z-50 flex flex-col bg-white text-black">
           
@@ -264,8 +274,8 @@ export default function Gallery() {
               <span className="text-[16px] font-normal ml-0.5">Library</span>
             </button>
 
-            {/* Info Tanggal Foto di Tengah - Huruf Hitam Bersih */}
-            <div className="flex flex-col items-center">
+            {/* Info Tanggal Foto */}
+            <div className="absolute left-1/2 top-[48px] flex -translate-x-1/2 flex-col items-center">
               <span className="text-[14px] font-semibold text-black tracking-tight leading-snug">
                 {selectedPhoto?.date}
               </span>
@@ -284,17 +294,17 @@ export default function Gallery() {
           <div 
             ref={sliderRef}
             onScroll={handleSliderScroll}
-            className="flex h-full w-full overflow-x-auto snap-x snap-mandatory pt-[88px] pb-[82px] no-scrollbar bg-[#fafafa] touch-pan-x"
+            className="absolute inset-0 flex overflow-x-auto snap-x snap-mandatory no-scrollbar overscroll-x-contain touch-pan-x bg-white"
           >
             {allPhotos.map((photo) => (
               <div 
                 key={photo.id}
-                className="flex h-full w-full flex-shrink-0 snap-center items-center justify-center px-4"
+                className="flex h-full w-full flex-[0_0_100%] snap-center items-center justify-center"
               >
                 <img 
                   src={photo.url} 
                   alt={photo.title} 
-                  className="max-h-[72vh] max-w-full rounded-[14px] object-contain shadow-md border border-gray-200/50 select-none" 
+                  className="pointer-events-none h-full w-full object-contain select-none"
                   draggable={false}
                 />
               </div>
@@ -306,7 +316,7 @@ export default function Gallery() {
             <div className="absolute bottom-[78px] left-4 right-4 z-30 rounded-[20px] bg-white p-4 shadow-2xl border border-gray-200/90 flex flex-col gap-1.5 animate-in fade-in slide-in-from-bottom-2 duration-150">
               <div className="flex justify-between items-center pb-1.5 border-b border-gray-100">
                 <span className="text-[14px] font-bold text-gray-900">{selectedPhoto.title}</span>
-                <span className="text-[12px] text-gray-400">iPhone 15 Pro</span>
+                <span className="text-[12px] text-gray-400">iPhone 15</span>
               </div>
               <div className="flex justify-between text-[11px] text-gray-500 pt-0.5">
                 <span>48 MP • 4032 × 3024</span>
@@ -318,7 +328,7 @@ export default function Gallery() {
             </div>
           )}
 
-          {/* Footer Action Bar Light Mode */}
+          {/* Footer Action Bar */}
           <div className="absolute bottom-0 left-0 right-0 z-20 flex w-full items-center justify-between px-7 pb-8 pt-3 bg-white/95 backdrop-blur-xl border-t border-gray-200/70 text-[#007aff]">
             
             {/* Share */}

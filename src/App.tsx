@@ -39,7 +39,7 @@ export default function App() {
           height: '852px',
           borderRadius: '54px',
           border: '10px solid #121214',
-          transform: 'scale(0.80)',
+          transform: 'scale(0.78)',
           transformOrigin: 'center'
         }}
       >
