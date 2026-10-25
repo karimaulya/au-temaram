@@ -1,10 +1,13 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { useStory } from '../story/StoryProvider';
 
 interface LockScreenProps {
-  onUnlock: () => void;
+  onUnlock: (openChatId?: string) => void;
 }
 
 export default function LockScreen({ onUnlock }: LockScreenProps) {
+  const { state } = useStory();
+  const pendingChat = useRef<string | undefined>(undefined);
   const [viewMode, setViewMode] = useState<'lock' | 'passcode'>('lock');
   const [passcode, setPasscode] = useState('');
   const [isShaking, setIsShaking] = useState(false);
@@ -14,7 +17,8 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
   const startYRef = useRef<number | null>(null);
 
   // Transisi ke layar input passcode
-  const goToPasscode = () => {
+  const goToPasscode = (chatId?: string) => {
+    pendingChat.current = chatId;
     setViewMode('passcode');
     setDragOffset(0);
     setPasscode('');
@@ -67,7 +71,7 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
     if (nextCode.length === 6) {
       if (nextCode === '072001') {
         setTimeout(() => {
-          onUnlock();
+          onUnlock(pendingChat.current);
         }, 120);
       } else {
         // Password salah: goyangkan titik-titik dan reset
@@ -84,7 +88,7 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
 
   const handleDelete = useCallback(() => {
     setPasscode(prev => prev.slice(0, -1));
-  }, []);
+  }, [setPasscode]);
 
   // Keyboard support (0-9, Backspace, Escape) saat di layar passcode
   useEffect(() => {
@@ -130,33 +134,37 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
         <div className="z-10 flex h-full w-full flex-col items-center pt-[78px] pointer-events-none">
           
           <span className="text-[19px] font-medium tracking-wide drop-shadow-md opacity-95">
-            Sun 25, 29°
+            Thu 7, 18°
           </span>
           
           <h1 
             className="text-[96px] font-extrabold tracking-tight leading-none drop-shadow-lg opacity-90 mt-1"
             style={{ fontFamily: '"SF Pro Rounded", ui-rounded, "SF Pro Display", sans-serif' }}
           >
-            12.04
+            {state.clock.replace(':', '.')}
           </h1>
 
-          {/* Notifikasi Messages */}
+          {/* Notifikasi dari skrip cerita */}
           <div className="mt-auto mb-28 w-full px-4 flex flex-col gap-2 pointer-events-auto">
-            <div 
-              onClick={goToPasscode}
-              className="rounded-[20px] bg-white/20 backdrop-blur-xl border border-white/20 p-3.5 shadow-lg flex items-center gap-3 cursor-pointer active:scale-95 transition-transform"
-            >
-              <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white shrink-0">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex justify-between items-center text-[12px] font-semibold text-white/90">
-                  <span>Messages</span>
-                  <span className="text-white/60">now</span>
+            {state.notifs.slice(-4).map(n => {
+              const isCal = n.chatId === 'calendar';
+              return (
+                <div
+                  key={n.id}
+                  onClick={() => goToPasscode(isCal ? undefined : n.chatId)}
+                  className="rounded-[20px] bg-white/20 backdrop-blur-xl border border-white/20 p-3.5 shadow-lg flex items-center gap-3 cursor-pointer active:scale-95 transition-transform"
+                >
+                  <img src={isCal ? '/icons/Calendar.svg' : '/icons/Messages.svg'} alt="" className="h-10 w-10 rounded-[10px] shrink-0 object-cover" />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-center text-[12px] font-semibold text-white/90">
+                      <span>{isCal ? 'Calendar' : 'Messages'}</span>
+                      <span className="text-white/60">now</span>
+                    </div>
+                    <p className="text-[13px] text-white/95 truncate">{isCal ? n.text : `${n.sender}: ${n.text}`}</p>
+                  </div>
                 </div>
-                <p className="text-[13px] text-white/95 truncate">Menuju Tak Terbatas🚀: Gama: Iya seenggaknya...</p>
-              </div>
-            </div>
+              );
+            })}
           </div>
 
           {/* Tombol Flashlight & Camera Bawah */}
@@ -178,7 +186,7 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
           
           {/* Teks Petunjuk Buka Geser ke Atas */}
           <div 
-            onClick={goToPasscode}
+            onClick={() => goToPasscode()}
             className="absolute bottom-3 flex flex-col items-center gap-1 cursor-pointer pointer-events-auto active:opacity-60 transition-opacity"
           >
             <div className="h-[4.5px] w-[134px] rounded-full bg-white/90 shadow-sm mt-0.5"></div>
@@ -202,7 +210,8 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
         <div className="absolute inset-0 bg-black/50 backdrop-blur-3xl"></div>
 
         {/* Konten Keypad Passcode */}
-        <div className="z-10 flex h-full w-full flex-col items-center justify-between pt-[96px] pb-10 px-6">
+        <div className="z-10 h-full w-full overflow-y-auto no-scrollbar [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex min-h-full w-full flex-col items-center justify-between gap-6 pt-[96px] pb-10 px-6">
           
           {/* Header Title & Dots */}
           <div className="flex flex-col items-center">
@@ -277,6 +286,7 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
             </button>
           </div>
 
+        </div>
         </div>
 
       </div>

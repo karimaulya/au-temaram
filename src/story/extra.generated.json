@@ -1,0 +1,478 @@
+{
+ "chats": [
+  {
+   "id": "mia",
+   "title": "Mia",
+   "isGroup": false
+  },
+  {
+   "id": "prev",
+   "title": "Ujang Kedu💙",
+   "isGroup": true
+  }
+ ],
+ "chunks": [
+  {
+   "id": "mia-1",
+   "chatId": "mia",
+   "messages": [
+    {
+     "id": "mia-msg-1",
+     "sender": "Mia (sepupu)",
+     "text": "Kamu udah bangun, Sa?",
+     "time": "06:10",
+     "isSelf": false
+    },
+    {
+     "id": "mia-msg-2",
+     "sender": "Mia (sepupu)",
+     "text": "Berita ini beneran?",
+     "time": "06:10",
+     "isSelf": false
+    },
+    {
+     "id": "mia-msg-3",
+     "sender": "Mia (sepupu)",
+     "text": "Link berita",
+     "time": "06:11",
+     "isSelf": false,
+     "kind": "link"
+    },
+    {
+     "id": "mia-msg-4",
+     "sender": "Mia (sepupu)",
+     "text": "Aku malah tahu dari berita🥹",
+     "time": "06:11",
+     "isSelf": false
+    },
+    {
+     "id": "mia-msg-5",
+     "sender": "Mia (sepupu)",
+     "text": "Aku sama mamaku jenguk nanti sore ya asa",
+     "time": "06:11",
+     "isSelf": false
+    },
+    {
+     "id": "mia-msg-6",
+     "sender": "Mia (sepupu)",
+     "text": "Kamu pasti bingung karena sendirian...",
+     "time": "06:12",
+     "isSelf": false
+    },
+    {
+     "id": "mia-msg-7",
+     "sender": "Mia (sepupu)",
+     "text": "Kok gak ada yang hubungin aku sih kalau kamu udah bangun",
+     "time": "06:12",
+     "isSelf": false
+    }
+   ]
+  },
+  {
+   "id": "prev-1",
+   "chatId": "prev",
+   "messages": [
+    {
+     "id": "prev-msg-1",
+     "sender": "Junghwan",
+     "text": "Aku udah beli pop mie",
+     "time": "11:30",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-2",
+     "sender": "Junghwan",
+     "text": "Chitato",
+     "time": "11:30",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-3",
+     "sender": "Junghwan",
+     "text": "Sosis",
+     "time": "11:31",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-4",
+     "sender": "Junghwan",
+     "text": "Donat",
+     "time": "11:31",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-5",
+     "sender": "Doyie",
+     "text": "Celana dalem udah belum?",
+     "time": "11:32",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-6",
+     "sender": "Junghwan",
+     "text": "BANG???",
+     "time": "11:33",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-7",
+     "sender": "Junghwan",
+     "text": "BELUM",
+     "time": "11:33",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-8",
+     "sender": "Bang Ajun",
+     "text": "Nanti kalau pup gantinya pake chitato aja",
+     "time": "11:35",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-9",
+     "sender": "Junghwan",
+     "text": "Emang aku pup di celana???",
+     "time": "11:36",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-10",
+     "sender": "Bang Ji",
+     "text": "biasanya juga gitu",
+     "time": "11:38",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-11",
+     "sender": "Junghwan",
+     "text": "Gak ya???!",
+     "time": "11:39",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-12",
+     "sender": "Bang Ucuk",
+     "text": "😁😁😁",
+     "time": "11:45",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-13",
+     "sender": "Bang Ucuk",
+     "text": "beli di sana juga gapapa",
+     "time": "11:45",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-14",
+     "sender": "Jae berisik",
+     "text": "Aduh gak sabar beli braga bakkerij lalu pamer pada dunia",
+     "time": "12:05",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-15",
+     "sender": "Jae berisik",
+     "text": "Nanti fotoin gue yang estetik @You",
+     "time": "12:06",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-16",
+     "sender": "Asahi",
+     "text": "10rb",
+     "time": "13:17",
+     "isSelf": true,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-17",
+     "sender": "Jeo",
+     "text": "Murah amat harga diri lu",
+     "time": "13:18",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-18",
+     "sender": "Asahi",
+     "text": "10 rb dolar",
+     "time": "13:19",
+     "isSelf": true,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-19",
+     "sender": "Jae berisik",
+     "text": "IN THIS ECONOMY",
+     "time": "13:20",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-20",
+     "sender": "Haruto",
+     "text": "Berisikkk ting tong ting tong mulu hp gua",
+     "time": "13:21",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-21",
+     "sender": "Haruto",
+     "text": "Masih kelas",
+     "time": "13:21",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-22",
+     "sender": "Bang Ochi",
+     "text": "Pada semangat mau ke bandung",
+     "time": "13:25",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-23",
+     "sender": "Bang Ochi",
+     "text": "Jangan pada telat, ya.",
+     "time": "13:25",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-24",
+     "sender": "Jae berisik",
+     "text": "TAG ORANGNYA AH @GW",
+     "time": "13:33",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-25",
+     "sender": "Asahi",
+     "text": "Baguslah ngaku sendiri",
+     "time": "13:40",
+     "isSelf": true,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-26",
+     "sender": "Bang Ucuk",
+     "text": "berarti nanti gantian nyetir gue, ji, ajun, sama ochi ya",
+     "time": "13:45",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-27",
+     "sender": "Bang Ucuk",
+     "text": "aman gak?",
+     "time": "13:45",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-28",
+     "sender": "Haruto",
+     "text": "Gue juga bisa",
+     "time": "13:46",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-29",
+     "sender": "Bang Ji",
+     "text": "ah ke bandung paling lama juga 3 jam, aman lah gak gantian juga udah biasa",
+     "time": "13:46",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-30",
+     "sender": "Bang Ajun",
+     "text": "See you nanti malam guys",
+     "time": "14:00",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-31",
+     "sender": "Jeo",
+     "text": "Belum malem juga udah liat muka lu semua lagi",
+     "time": "14:05",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-32",
+     "sender": "Doyie",
+     "text": "Gue kan berangkat dari tangerang",
+     "time": "14:06",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-33",
+     "sender": "Doyie",
+     "text": "Pasti kangen kan lo",
+     "time": "14:06",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-34",
+     "sender": "Jeo",
+     "text": "Idih",
+     "time": "14:06",
+     "isSelf": false,
+     "dateLabel": "Rabu, 6 Agustus"
+    },
+    {
+     "id": "prev-msg-35",
+     "sender": "Jae berisik",
+     "text": "WOOOYYY PADA KEMANA GUE DAH DI TIKUM",
+     "time": "03:00",
+     "isSelf": false,
+     "dateLabel": "Kamis, 7 Agustus"
+    },
+    {
+     "id": "prev-msg-36",
+     "sender": "Jae berisik",
+     "text": "@All",
+     "time": "03:00",
+     "isSelf": false,
+     "dateLabel": "Kamis, 7 Agustus"
+    },
+    {
+     "id": "prev-msg-37",
+     "sender": "Bang Ji",
+     "text": "sabar buset, janjian juga jam setengah 4",
+     "time": "03:05",
+     "isSelf": false,
+     "dateLabel": "Kamis, 7 Agustus"
+    },
+    {
+     "id": "prev-msg-38",
+     "sender": "Bang Ji",
+     "text": "abang tahajud dulu",
+     "time": "03:05",
+     "isSelf": false,
+     "dateLabel": "Kamis, 7 Agustus"
+    },
+    {
+     "id": "prev-msg-39",
+     "sender": "Jeo",
+     "text": "GELI",
+     "time": "03:06",
+     "isSelf": false,
+     "dateLabel": "Kamis, 7 Agustus"
+    },
+    {
+     "id": "prev-msg-40",
+     "sender": "Jae berisik",
+     "text": "Gela geli gela geli buru otw @Jeo",
+     "time": "03:07",
+     "isSelf": false,
+     "dateLabel": "Kamis, 7 Agustus"
+    },
+    {
+     "id": "prev-msg-41",
+     "sender": "Jeo",
+     "text": "Y",
+     "time": "03:07",
+     "isSelf": false,
+     "dateLabel": "Kamis, 7 Agustus"
+    },
+    {
+     "id": "prev-msg-42",
+     "sender": "Junghwan",
+     "text": "Aku otw sama bang asa",
+     "time": "03:10",
+     "isSelf": false,
+     "dateLabel": "Kamis, 7 Agustus"
+    },
+    {
+     "id": "prev-msg-43",
+     "sender": "Bang Ochi",
+     "text": "Gue dan mobil sewaan kita udah di tikum ya",
+     "time": "03:10",
+     "isSelf": false,
+     "dateLabel": "Kamis, 7 Agustus"
+    },
+    {
+     "id": "prev-msg-44",
+     "sender": "Jae berisik",
+     "text": "Gue lah orang terajin sedunia itu (sama bang ochi)",
+     "time": "03:10",
+     "isSelf": false,
+     "dateLabel": "Kamis, 7 Agustus"
+    },
+    {
+     "id": "prev-msg-45",
+     "sender": "Jae berisik",
+     "text": "MANA PEMIMPIN KITA @Bang Ucuk",
+     "time": "03:15",
+     "isSelf": false,
+     "dateLabel": "Kamis, 7 Agustus"
+    },
+    {
+     "id": "prev-msg-46",
+     "sender": "Jeo",
+     "text": "BERISIK JAENUDIN",
+     "time": "03:20",
+     "isSelf": false,
+     "dateLabel": "Kamis, 7 Agustus"
+    },
+    {
+     "id": "prev-msg-47",
+     "sender": "Bang Ucuk",
+     "text": "sorry beli sikat gigi dulu",
+     "time": "03:25",
+     "isSelf": false,
+     "dateLabel": "Kamis, 7 Agustus"
+    },
+    {
+     "id": "prev-msg-48",
+     "sender": "Bang Ucuk",
+     "text": "gue udah di tikum, hati-hati semua",
+     "time": "03:25",
+     "isSelf": false,
+     "dateLabel": "Kamis, 7 Agustus"
+    },
+    {
+     "id": "prev-msg-49",
+     "sender": "Bang Ucuk",
+     "text": "semuanya berdoa juga ya semoga kita selamat sampai tujuan",
+     "time": "03:25",
+     "isSelf": false,
+     "dateLabel": "Kamis, 7 Agustus"
+    },
+    {
+     "id": "prev-msg-50",
+     "sender": "Asahi",
+     "text": "Aamiin, dan semoga wishlist di bandungnya tercapai :)",
+     "time": "03:26",
+     "isSelf": true,
+     "dateLabel": "Kamis, 7 Agustus"
+    }
+   ]
+  }
+ ]
+}

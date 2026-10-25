@@ -1,0 +1,1898 @@
+{
+  "chats": [
+    {
+      "id": "group",
+      "title": "GRUP Ujang Kedu",
+      "isGroup": true
+    },
+    {
+      "id": "jae",
+      "title": "Jae berisik",
+      "isGroup": false
+    },
+    {
+      "id": "owner",
+      "title": "Owner Penginapan",
+      "isGroup": false
+    },
+    {
+      "id": "ucuk",
+      "title": "Bang Ucuk",
+      "isGroup": false
+    },
+    {
+      "id": "jeo",
+      "title": "Jeo",
+      "isGroup": false
+    }
+  ],
+  "chunks": [
+    {
+      "id": "group-1",
+      "chatId": "group",
+      "sheet": "GRUP Ujang Kedu",
+      "messages": [
+        {
+          "id": "group-1:msg-1",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "gua kaget banget edan",
+          "kind": "text",
+          "time": "04:17"
+        },
+        {
+          "id": "group-1:msg-2",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "gua kira udah mati, habisnya gelap semua",
+          "kind": "text",
+          "time": "04:17"
+        },
+        {
+          "id": "group-1:msg-3",
+          "sender": "Doyie",
+          "isSelf": false,
+          "text": "Sejak kapan mati listrik?",
+          "kind": "text",
+          "time": "04:18"
+        },
+        {
+          "id": "group-1:msg-4",
+          "sender": "Bang Ajun",
+          "isSelf": false,
+          "text": "Kayaknya lampunya deh yg rusak guis",
+          "kind": "text",
+          "time": "04:18"
+        },
+        {
+          "id": "group-1:msg-5",
+          "sender": "Bang Ajun",
+          "isSelf": false,
+          "text": "Ini hp gw dicas nyambung kok",
+          "kind": "text",
+          "time": "04:18"
+        },
+        {
+          "id": "group-1:msg-6",
+          "sender": "Haruto",
+          "isSelf": false,
+          "text": "Keknya harus dichat deh ownernya",
+          "kind": "text",
+          "time": "04:19"
+        },
+        {
+          "id": "group-1:msg-7",
+          "sender": "Haruto",
+          "isSelf": false,
+          "text": "Siapa yang punya nomornya?",
+          "kind": "text",
+          "time": "04:19"
+        },
+        {
+          "id": "group-1:msg-8",
+          "sender": "Bang Ji",
+          "isSelf": false,
+          "text": "asa sama junghwan yg kemarin booking",
+          "kind": "text",
+          "time": "04:20"
+        },
+        {
+          "id": "group-1:msg-9",
+          "sender": "Bang Ji",
+          "isSelf": false,
+          "text": "ada gak sa? @You",
+          "kind": "text",
+          "time": "04:20"
+        },
+        {
+          "id": "group-1:msg-10",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Ada",
+          "kind": "text",
+          "time": "04:20"
+        },
+        {
+          "id": "group-1:msg-11",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Wait",
+          "kind": "text",
+          "time": "04:20"
+        },
+        {
+          "id": "group-1:msg-12",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Ini penginapannya gak dicek dulu apa sblm disewain",
+          "kind": "text",
+          "time": "04:21"
+        },
+        {
+          "id": "group-1:msg-13",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Kecewa berat gue jir 💔",
+          "kind": "text",
+          "time": "04:21"
+        },
+        {
+          "id": "group-1:msg-14",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Lebay",
+          "kind": "text",
+          "time": "04:22"
+        },
+        {
+          "id": "group-1:msg-15",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Yaudah semuanya tidur lagi",
+          "kind": "text",
+          "time": "04:22"
+        },
+        {
+          "id": "group-1:msg-16",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Awas kalau nanti pagi gak jadi roti gempol :(",
+          "kind": "text",
+          "time": "04:22"
+        },
+        {
+          "id": "group-1:msg-17",
+          "sender": "Junghwan",
+          "isSelf": false,
+          "text": "ROTI GEWMPOOOOL",
+          "kind": "text",
+          "time": "04:22"
+        },
+        {
+          "id": "group-1:msg-18",
+          "sender": "Bang Ochi",
+          "isSelf": false,
+          "text": "Denger makanan aja dia bangun.",
+          "kind": "text",
+          "time": "04:23"
+        },
+        {
+          "id": "group-1:msg-19",
+          "sender": "Bang Ochi",
+          "isSelf": false,
+          "text": "Tadi masih ngorok.",
+          "kind": "text",
+          "time": "04:23"
+        },
+        {
+          "id": "group-1:msg-20",
+          "sender": "Bang Ochi",
+          "isSelf": false,
+          "text": "Tenang aja, Jeo. Semua itinerary Bandung yang udah kita rencanain, pasti jadi kok.",
+          "kind": "text",
+          "time": "04:24"
+        },
+        {
+          "id": "group-1:msg-21",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Siapppp",
+          "kind": "text",
+          "time": "04:25"
+        }
+      ]
+    },
+    {
+      "id": "jae-1",
+      "chatId": "jae",
+      "sheet": "Jae berisik",
+      "messages": [
+        {
+          "id": "jae-1:msg-1",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Udah dichat?",
+          "kind": "text",
+          "time": "04:25"
+        },
+        {
+          "id": "jae-1:msg-2",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Belum",
+          "kind": "text",
+          "time": "04:25"
+        },
+        {
+          "id": "jae-1:msg-3",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Sabar tangan gue cuma 2",
+          "kind": "text",
+          "time": "04:25"
+        },
+        {
+          "id": "jae-1:msg-4",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Tangan gue juga 2",
+          "kind": "text",
+          "time": "04:26"
+        },
+        {
+          "id": "jae-1:msg-5",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Lagian lo dimana deh",
+          "kind": "text",
+          "time": "04:26"
+        },
+        {
+          "id": "jae-1:msg-6",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Bukannya lo yang minta sekamar sama gue?",
+          "kind": "text",
+          "time": "04:27"
+        },
+        {
+          "id": "jae-1:msg-7",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Sekarang malah ngilang",
+          "kind": "text",
+          "time": "04:27"
+        },
+        {
+          "id": "jae-1:msg-8",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Gerah. Gue mau tidur di lantai",
+          "kind": "text",
+          "time": "04:27"
+        },
+        {
+          "id": "jae-1:msg-9",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Buruan sa",
+          "kind": "text",
+          "time": "04:27"
+        },
+        {
+          "id": "jae-1:msg-10",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Enggak nunggu pagi aja?",
+          "kind": "text",
+          "time": "04:28"
+        },
+        {
+          "id": "jae-1:msg-11",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Gak lah, gelap",
+          "kind": "text",
+          "time": "04:28"
+        },
+        {
+          "id": "jae-1:msg-12",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Lo mau mandi dalam keadaan blind box?",
+          "kind": "text",
+          "time": "04:28"
+        },
+        {
+          "id": "jae-1:msg-13",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Sinting",
+          "kind": "text",
+          "time": "04:29"
+        },
+        {
+          "id": "jae-1:msg-14",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Eh, jam dinding juga mati ya?",
+          "kind": "text",
+          "time": "04:29"
+        },
+        {
+          "id": "jae-1:msg-15",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Iya, makanya lo chat ownernya sekarang",
+          "kind": "text",
+          "time": "04:29"
+        }
+      ]
+    },
+    {
+      "id": "owner-1",
+      "chatId": "owner",
+      "sheet": "Owner Penginapan",
+      "messages": [
+        {
+          "id": "owner-1:msg-1",
+          "sender": "Temaram Guest House",
+          "isSelf": false,
+          "text": "Terima kasih sudah memesan kamar lewat website Temaram! Saat check-in nanti, dimohon tunjukkan invoice berikut dan kartu identitas. Kami tunggu kehadirannya di Temaram. Selamat bersenang-senang di Bandung.",
+          "kind": "text",
+          "dateLabel": "Kamis, 5 Agustus"
+        },
+        {
+          "id": "owner-1:msg-2",
+          "sender": "Temaram Guest House",
+          "isSelf": false,
+          "text": "File invoice",
+          "kind": "file",
+          "dateLabel": "Kamis, 5 Agustus"
+        },
+        {
+          "id": "owner-1:msg-3",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Terima kasih, Pak.",
+          "kind": "text",
+          "dateLabel": "Kamis, 5 Agustus"
+        },
+        {
+          "id": "owner-1:msg-4",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Pagi, Pak. Saya mahasiswa dari jakarta yang nyewa penginapan bapak. Maaf kirim pesan pagi-pagi",
+          "kind": "text",
+          "time": "04:30"
+        },
+        {
+          "id": "owner-1:msg-5",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Ini kenapa semua lampu mati ya pak?",
+          "kind": "text",
+          "time": "04:30"
+        },
+        {
+          "id": "owner-1:msg-6",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Boleh minta tolong dibenerin?🙏",
+          "kind": "text",
+          "time": "04:31"
+        },
+        {
+          "id": "owner-1:msg-7",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Kayaknya masalahnya di lampu, soalnya teman saya bisa charge hp",
+          "kind": "text",
+          "time": "04:31"
+        },
+        {
+          "id": "owner-1:msg-8",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Boleh saya telepon?",
+          "kind": "text",
+          "time": "04:35"
+        }
+      ]
+    },
+    {
+      "id": "group-2",
+      "chatId": "group",
+      "sheet": "GRUP Ujang Kedu (2)",
+      "messages": [
+        {
+          "id": "group-2:msg-22",
+          "sender": "Bang Ajun",
+          "isSelf": false,
+          "text": "Gimana sa?",
+          "kind": "text",
+          "time": "04:40"
+        },
+        {
+          "id": "group-2:msg-23",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Ngeread, tapi enggak dibales",
+          "kind": "text",
+          "time": "04:40"
+        },
+        {
+          "id": "group-2:msg-24",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Terus tiba-tiba telepon duluan",
+          "kind": "text",
+          "time": "04:40"
+        },
+        {
+          "id": "group-2:msg-25",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Ownernya?",
+          "kind": "text",
+          "time": "04:41"
+        },
+        {
+          "id": "group-2:msg-26",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Bukan",
+          "kind": "text",
+          "time": "04:42"
+        },
+        {
+          "id": "group-2:msg-27",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Kakek gue",
+          "kind": "text",
+          "time": "04:42"
+        },
+        {
+          "id": "group-2:msg-28",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Kakek lo tiba-tiba telepon???",
+          "kind": "text",
+          "time": "04:42"
+        },
+        {
+          "id": "group-2:msg-29",
+          "sender": "Bang Ji",
+          "isSelf": false,
+          "text": "ya ownernya anyinggg",
+          "kind": "text",
+          "time": "04:43"
+        },
+        {
+          "id": "group-2:msg-30",
+          "sender": "Bang Ji",
+          "isSelf": false,
+          "text": "terus gimana?",
+          "kind": "text",
+          "time": "04:43"
+        },
+        {
+          "id": "group-2:msg-31",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Enggak jelas. Cuma hening doang, terus dimatiin",
+          "kind": "text",
+          "time": "04:45"
+        },
+        {
+          "id": "group-2:msg-32",
+          "sender": "Bang Ochi",
+          "isSelf": false,
+          "text": "Ya udah, beli aja, Sa.",
+          "kind": "text",
+          "time": "04:45"
+        },
+        {
+          "id": "group-2:msg-33",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Gue?",
+          "kind": "text",
+          "time": "04:46"
+        },
+        {
+          "id": "group-2:msg-34",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Iya lah siapa lagi",
+          "kind": "text",
+          "time": "04:46"
+        },
+        {
+          "id": "group-2:msg-35",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Sendiri?",
+          "kind": "text",
+          "time": "04:48"
+        },
+        {
+          "id": "group-2:msg-36",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "iya, gapapa sendiri ya sa?",
+          "kind": "text",
+          "time": "04:48"
+        },
+        {
+          "id": "group-2:msg-37",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "biar terbiasa sendiri",
+          "kind": "text",
+          "time": "04:48"
+        },
+        {
+          "id": "group-2:msg-38",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Maksudnya?",
+          "kind": "text",
+          "time": "04:50"
+        }
+      ]
+    },
+    {
+      "id": "jae-2",
+      "chatId": "jae",
+      "sheet": "Jae berisik (2)",
+      "messages": [
+        {
+          "id": "jae-2:msg-15",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Kenapa sih emang? Takut ya? Wkwkwkw",
+          "kind": "text",
+          "time": "04:50"
+        },
+        {
+          "id": "jae-2:msg-16",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Lo yang ngetokin pintu? Enggak lucu bercandaan lo",
+          "kind": "text",
+          "time": "04:52"
+        },
+        {
+          "id": "jae-2:msg-17",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Mending lo temenin gue beli lampu",
+          "kind": "text",
+          "time": "04:52"
+        },
+        {
+          "id": "jae-2:msg-18",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Oke",
+          "kind": "text",
+          "time": "04:53"
+        }
+      ]
+    },
+    {
+      "id": "jae-3",
+      "chatId": "jae",
+      "sheet": "Jae berisik (3)",
+      "messages": [
+        {
+          "id": "jae-3:msg-15",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Buruan, lo siap-siapnya kek putri solo",
+          "kind": "text",
+          "time": "04:55"
+        },
+        {
+          "id": "jae-3:msg-16",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Jae lo dmn",
+          "kind": "text",
+          "time": "04:55"
+        },
+        {
+          "id": "jae-3:msg-17",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Woy",
+          "kind": "text",
+          "time": "04:55"
+        },
+        {
+          "id": "jae-3:msg-18",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Bales",
+          "kind": "text",
+          "time": "04:55"
+        },
+        {
+          "id": "jae-3:msg-19",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Paansi",
+          "kind": "text",
+          "time": "04:56"
+        },
+        {
+          "id": "jae-3:msg-20",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Gue di luar",
+          "kind": "text",
+          "time": "04:56"
+        },
+        {
+          "id": "jae-3:msg-21",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Penakut amat",
+          "kind": "text",
+          "time": "04:56"
+        },
+        {
+          "id": "jae-3:msg-22",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Enggak",
+          "kind": "text",
+          "time": "04:56"
+        },
+        {
+          "id": "jae-3:msg-23",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Ini bang ji lagi geser2 kursi",
+          "kind": "text",
+          "time": "04:56",
+          "cue": "suara benda digeser"
+        },
+        {
+          "id": "jae-3:msg-24",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Trs gue oanggil",
+          "kind": "text",
+          "time": "04:56"
+        },
+        {
+          "id": "jae-3:msg-25",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Enggak nengok",
+          "kind": "text",
+          "time": "04:57"
+        },
+        {
+          "id": "jae-3:msg-26",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Tp bales",
+          "kind": "text",
+          "time": "04:57"
+        },
+        {
+          "id": "jae-3:msg-27",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Sambil teriak",
+          "kind": "text",
+          "time": "04:57"
+        },
+        {
+          "id": "jae-3:msg-28",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Nyuruh gue keluar",
+          "kind": "text",
+          "time": "04:57"
+        },
+        {
+          "id": "jae-3:msg-29",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Ya udah sini buruan. Gue juga merinding nih di luar",
+          "kind": "text",
+          "time": "04:57"
+        },
+        {
+          "id": "jae-3:msg-30",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Biasanya jam segini udah terang, tapi ini gelap bgt jir",
+          "kind": "text",
+          "time": "04:57"
+        },
+        {
+          "id": "jae-3:msg-31",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Jae",
+          "kind": "text",
+          "time": "04:58"
+        },
+        {
+          "id": "jae-3:msg-32",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Bang ajun nangis di dapir",
+          "kind": "text",
+          "time": "04:58",
+          "cue": "tambahin suara nangis"
+        },
+        {
+          "id": "jae-3:msg-33",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Tapi",
+          "kind": "text",
+          "time": "04:58"
+        },
+        {
+          "id": "jae-3:msg-34",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Shit",
+          "kind": "text",
+          "time": "04:58"
+        },
+        {
+          "id": "jae-3:msg-35",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Dia laot geu",
+          "kind": "text",
+          "time": "04:58"
+        },
+        {
+          "id": "jae-3:msg-36",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Trs ketawa, trs nangis",
+          "kind": "text",
+          "time": "04:58",
+          "cue": "tambahin suara ketawa"
+        },
+        {
+          "id": "jae-3:msg-37",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Jae",
+          "kind": "text",
+          "time": "04:58"
+        },
+        {
+          "id": "jae-3:msg-38",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Jae",
+          "kind": "text",
+          "time": "04:58"
+        },
+        {
+          "id": "jae-3:msg-39",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Kok smuabya aneh",
+          "kind": "text",
+          "time": "04:59"
+        },
+        {
+          "id": "jae-3:msg-40",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "Keluar sekarang juga sa. Cepet.",
+          "kind": "text",
+          "time": "05:00"
+        }
+      ]
+    },
+    {
+      "id": "ucuk-1",
+      "chatId": "ucuk",
+      "sheet": "Bang Ucuk",
+      "messages": [
+        {
+          "id": "ucuk-1:msg-1",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "udah bareng jae, sa?",
+          "kind": "text",
+          "time": "05:01"
+        },
+        {
+          "id": "ucuk-1:msg-2",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Udah bang",
+          "kind": "text",
+          "time": "05:01"
+        },
+        {
+          "id": "ucuk-1:msg-3",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Bang",
+          "kind": "text",
+          "time": "05:01"
+        },
+        {
+          "id": "ucuk-1:msg-4",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "iya?",
+          "kind": "text",
+          "time": "05:02"
+        },
+        {
+          "id": "ucuk-1:msg-5",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Abang di penginapan?",
+          "kind": "text",
+          "time": "05:02"
+        },
+        {
+          "id": "ucuk-1:msg-6",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "iya lah di mana lagi",
+          "kind": "text",
+          "time": "05:02"
+        },
+        {
+          "id": "ucuk-1:msg-7",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "gelap begini mana bisa keluar sa",
+          "kind": "text",
+          "time": "05:03"
+        },
+        {
+          "id": "ucuk-1:msg-8",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Mendingan abang ajak yang lain keluar deh",
+          "kind": "text",
+          "time": "05:03"
+        },
+        {
+          "id": "ucuk-1:msg-9",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "kenapa emang?",
+          "kind": "text",
+          "time": "05:04"
+        },
+        {
+          "id": "ucuk-1:msg-10",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Ada hantu",
+          "kind": "text",
+          "time": "05:04"
+        },
+        {
+          "id": "ucuk-1:msg-11",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Atau setan",
+          "kind": "text",
+          "time": "05:04"
+        },
+        {
+          "id": "ucuk-1:msg-12",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Atau apalah itu gue enggak tau",
+          "kind": "text",
+          "time": "05:05"
+        },
+        {
+          "id": "ucuk-1:msg-13",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Mereka nyerupain bang ji dan bang ajun",
+          "kind": "text",
+          "time": "05:05"
+        },
+        {
+          "id": "ucuk-1:msg-14",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Aneh",
+          "kind": "text",
+          "time": "05:05"
+        },
+        {
+          "id": "ucuk-1:msg-15",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Gue yakin enggak pada denger karena masih tidur",
+          "kind": "text",
+          "time": "05:06"
+        },
+        {
+          "id": "ucuk-1:msg-16",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Tapi penginapannya aneh. Lampu dan jam mati semua",
+          "kind": "text",
+          "time": "05:06"
+        },
+        {
+          "id": "ucuk-1:msg-17",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Ini kita lagi dijebak atau gimana sih bang?",
+          "kind": "text",
+          "time": "05:06"
+        },
+        {
+          "id": "ucuk-1:msg-18",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "tenang sa, tenang. kita lagi gak lucky aja",
+          "kind": "text",
+          "time": "05:07"
+        },
+        {
+          "id": "ucuk-1:msg-19",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "lo cari warung aja, beli lampunya 5",
+          "kind": "text",
+          "time": "05:07"
+        },
+        {
+          "id": "ucuk-1:msg-20",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "ada uang kan? yang lain biar gue pikirin",
+          "kind": "text",
+          "time": "05:07"
+        },
+        {
+          "id": "ucuk-1:msg-21",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Ada. Ini juga jalanan kenapa lagi",
+          "kind": "text",
+          "time": "05:08"
+        },
+        {
+          "id": "ucuk-1:msg-22",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Padahal biasanya lewat jam 5 udah mulai terang.",
+          "kind": "text",
+          "time": "05:08"
+        },
+        {
+          "id": "ucuk-1:msg-23",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Ini hening banget, gue enggak tau warungnya sebelah mana",
+          "kind": "text",
+          "time": "05:08"
+        },
+        {
+          "id": "ucuk-1:msg-24",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "lurus aja. pas dateng gue sempet liat ada toko listrik",
+          "kind": "text",
+          "time": "05:09"
+        },
+        {
+          "id": "ucuk-1:msg-25",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "oh iya",
+          "kind": "text",
+          "time": "05:09"
+        },
+        {
+          "id": "ucuk-1:msg-26",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "gue kemarin dikasih tau pemilik penginapan",
+          "kind": "text",
+          "time": "05:09"
+        },
+        {
+          "id": "ucuk-1:msg-27",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Dikasih tau apa bang?",
+          "kind": "text",
+          "time": "05:10"
+        },
+        {
+          "id": "ucuk-1:msg-28",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "kalau lewat jalanan itu",
+          "kind": "text",
+          "time": "05:10"
+        },
+        {
+          "id": "ucuk-1:msg-29",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "jangan nengok ke belakang",
+          "kind": "text",
+          "time": "05:10"
+        },
+        {
+          "id": "ucuk-1:msg-30",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Bang",
+          "kind": "text",
+          "time": "05:15"
+        },
+        {
+          "id": "ucuk-1:msg-31",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Telepon gue please",
+          "kind": "text",
+          "time": "05:15"
+        },
+        {
+          "id": "ucuk-1:msg-32",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Jaehyuk amneh",
+          "kind": "text",
+          "time": "05:16"
+        }
+      ]
+    },
+    {
+      "id": "group-3",
+      "chatId": "group",
+      "sheet": "GRUP Ujang Kedu (3)",
+      "messages": [
+        {
+          "id": "group-3:msg-38",
+          "sender": "Doyie",
+          "isSelf": false,
+          "text": "Kok lama sa?",
+          "kind": "text",
+          "time": "05:30"
+        },
+        {
+          "id": "group-3:msg-39",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Gue lagi sembunyi",
+          "kind": "text",
+          "time": "05:30"
+        },
+        {
+          "id": "group-3:msg-40",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Lah nape lu",
+          "kind": "text",
+          "time": "05:31"
+        },
+        {
+          "id": "group-3:msg-41",
+          "sender": "Bang Ajun",
+          "isSelf": false,
+          "text": "Dimana?",
+          "kind": "text",
+          "time": "05:31"
+        },
+        {
+          "id": "group-3:msg-42",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Bang ajun",
+          "kind": "text",
+          "time": "05:31"
+        },
+        {
+          "id": "group-3:msg-43",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Lo enggak apa-apa?",
+          "kind": "text",
+          "time": "05:31"
+        },
+        {
+          "id": "group-3:msg-44",
+          "sender": "Bang Ajun",
+          "isSelf": false,
+          "text": "Aman. Kenapa emang? Kok khawatir gitu sama gw",
+          "kind": "text",
+          "time": "05:32"
+        },
+        {
+          "id": "group-3:msg-45",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Alhamdulillah, gue kira lo kenapa-kenapa bang",
+          "kind": "text",
+          "time": "05:32"
+        },
+        {
+          "id": "group-3:msg-46",
+          "sender": "Bang Ji",
+          "isSelf": false,
+          "text": "ada apa sieee ini",
+          "kind": "text",
+          "time": "05:32"
+        },
+        {
+          "id": "group-3:msg-47",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Berarti halusinasi gue doang. Bang ji juga enggak apa-apa",
+          "kind": "text",
+          "time": "05:33"
+        },
+        {
+          "id": "group-3:msg-48",
+          "sender": "Bang Ji",
+          "isSelf": false,
+          "text": "yeee gue mah ganteng",
+          "kind": "text",
+          "time": "05:34"
+        },
+        {
+          "id": "group-3:msg-49",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Najis",
+          "kind": "text",
+          "time": "05:34"
+        },
+        {
+          "id": "group-3:msg-50",
+          "sender": "Bang Ji",
+          "isSelf": false,
+          "text": "😘",
+          "kind": "text",
+          "time": "05:35"
+        },
+        {
+          "id": "group-3:msg-51",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Btw",
+          "kind": "text",
+          "time": "05:35"
+        },
+        {
+          "id": "group-3:msg-52",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Jae ada di sana?",
+          "kind": "text",
+          "time": "05:35"
+        },
+        {
+          "id": "group-3:msg-53",
+          "sender": "Haruto",
+          "isSelf": false,
+          "text": "Lah bukannya bareng lo?",
+          "kind": "text",
+          "time": "05:35"
+        },
+        {
+          "id": "group-3:msg-54",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Iya, tapi nanti gue ceritain lagi deh",
+          "kind": "text",
+          "time": "05:36"
+        },
+        {
+          "id": "group-3:msg-55",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Ini gue masih sembunyi",
+          "kind": "text",
+          "time": "05:36"
+        },
+        {
+          "id": "group-3:msg-56",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Semoga yang ngejar gue udah pergi",
+          "kind": "text",
+          "time": "05:36"
+        },
+        {
+          "id": "group-3:msg-57",
+          "sender": "Doyie",
+          "isSelf": false,
+          "text": "Siapa yang ngejar?",
+          "kind": "text",
+          "time": "05:36"
+        },
+        {
+          "id": "group-3:msg-58",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Hantu kali",
+          "kind": "text",
+          "time": "05:37"
+        },
+        {
+          "id": "group-3:msg-59",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Mirip jae",
+          "kind": "text",
+          "time": "05:37"
+        },
+        {
+          "id": "group-3:msg-60",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Wkwkwkw stress",
+          "kind": "text",
+          "time": "05:37"
+        },
+        {
+          "id": "group-3:msg-61",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Iya gue juga enggak ngerti kenapa gue mendadak gila",
+          "kind": "text",
+          "time": "05:38"
+        },
+        {
+          "id": "group-3:msg-62",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Ini gue lagi sembunyi di balik pintu. Sumpah ... gue takut",
+          "kind": "text",
+          "time": "05:38"
+        },
+        {
+          "id": "group-3:msg-63",
+          "sender": "Bang Ajun",
+          "isSelf": false,
+          "text": "Sukses deh buat persembunyian lo, kata gw mah hadapi",
+          "kind": "text",
+          "time": "05:39"
+        },
+        {
+          "id": "group-3:msg-64",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Takut ... banget ...",
+          "kind": "text",
+          "time": "05:40"
+        },
+        {
+          "id": "group-3:msg-65",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Manteman tolong gue",
+          "kind": "text",
+          "time": "05:40"
+        },
+        {
+          "id": "group-3:msg-66",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Junghwan ada di sana?",
+          "kind": "text",
+          "time": "05:41"
+        }
+      ]
+    },
+    {
+      "id": "jae-4",
+      "chatId": "jae",
+      "sheet": "Jae berisik (4)",
+      "messages": [
+        {
+          "id": "jae-4:msg-41",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "KELUAR",
+          "kind": "text",
+          "time": "05:45"
+        },
+        {
+          "id": "jae-4:msg-42",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "KELUAR ASA",
+          "kind": "text",
+          "time": "05:45"
+        },
+        {
+          "id": "jae-4:msg-43",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "KELUAR ATAU MATI",
+          "kind": "text",
+          "time": "05:45"
+        },
+        {
+          "id": "jae-4:msg-44",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "KELUAR SEKARANG",
+          "kind": "text",
+          "time": "05:45"
+        },
+        {
+          "id": "jae-4:msg-45",
+          "sender": "Jae berisik",
+          "isSelf": false,
+          "text": "KELUAR ATAU GUE DORONG PINTUNYA",
+          "kind": "text",
+          "time": "05:45"
+        },
+        {
+          "id": "jae-4:msg-46",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "SADAR ANJING",
+          "kind": "text",
+          "time": "05:46"
+        },
+        {
+          "id": "jae-4:msg-47",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "SADAR JAE, INI GUE ASAHI",
+          "kind": "text",
+          "time": "05:46",
+          "cue": "ketukannya berhenti"
+        }
+      ]
+    },
+    {
+      "id": "jeo-1",
+      "chatId": "jeo",
+      "sheet": "Jeo",
+      "messages": [
+        {
+          "id": "jeo-1:msg-1",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Wei",
+          "kind": "text",
+          "time": "05:47"
+        },
+        {
+          "id": "jeo-1:msg-2",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Aman gak lo? Shareloc buru, gue susul",
+          "kind": "text",
+          "time": "05:47"
+        },
+        {
+          "id": "jeo-1:msg-3",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Shared location",
+          "kind": "location",
+          "time": "05:47"
+        },
+        {
+          "id": "jeo-1:msg-4",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Je",
+          "kind": "text",
+          "time": "05:47"
+        },
+        {
+          "id": "jeo-1:msg-5",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Oit",
+          "kind": "text",
+          "time": "05:47"
+        },
+        {
+          "id": "jeo-1:msg-6",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Junghwan ada di sana?",
+          "kind": "text",
+          "time": "05:48"
+        },
+        {
+          "id": "jeo-1:msg-7",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Gatau, gue di kamar sendirian",
+          "kind": "text",
+          "time": "05:48"
+        },
+        {
+          "id": "jeo-1:msg-8",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Kenapa nanya junghwan?",
+          "kind": "text",
+          "time": "05:48"
+        },
+        {
+          "id": "jeo-1:msg-9",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Lo inget kan gue sembunyi di rumah kosong?",
+          "kind": "text",
+          "time": "05:49"
+        },
+        {
+          "id": "jeo-1:msg-10",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Iya, gue gak pikun jir",
+          "kind": "text",
+          "time": "05:49"
+        },
+        {
+          "id": "jeo-1:msg-11",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Ada junghwan di sini",
+          "kind": "text",
+          "time": "05:49"
+        },
+        {
+          "id": "jeo-1:msg-12",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Hah? Lo kenapa sih daritadi sa?",
+          "kind": "text",
+          "time": "05:50"
+        },
+        {
+          "id": "jeo-1:msg-13",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Junghwan di sini",
+          "kind": "text",
+          "time": "05:51"
+        },
+        {
+          "id": "jeo-1:msg-14",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Lagi makan",
+          "kind": "text",
+          "time": "05:51",
+          "cue": "suara langkah mendekat"
+        },
+        {
+          "id": "jeo-1:msg-15",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Dia ngedeket je",
+          "kind": "text",
+          "time": "05:51"
+        },
+        {
+          "id": "jeo-1:msg-16",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Je gimana",
+          "kind": "text",
+          "time": "05:51"
+        },
+        {
+          "id": "jeo-1:msg-17",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Je gue takut banget sumpah, lo masih lama nyusulnya?",
+          "kind": "text",
+          "time": "05:52"
+        },
+        {
+          "id": "jeo-1:msg-18",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Gue gak tau lo bohong atau gak, sekarang masuk ke salah satu ruangan",
+          "kind": "text",
+          "time": "05:52"
+        },
+        {
+          "id": "jeo-1:msg-19",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Oke, I did",
+          "kind": "text",
+          "time": "05:52"
+        },
+        {
+          "id": "jeo-1:msg-20",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Oke oke bagus",
+          "kind": "text",
+          "time": "05:53"
+        },
+        {
+          "id": "jeo-1:msg-21",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Dia makin deket je",
+          "kind": "text",
+          "time": "05:53"
+        },
+        {
+          "id": "jeo-1:msg-22",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Dia udah ada di balik pintu. Tepat di belakang gue",
+          "kind": "text",
+          "time": "05:53"
+        },
+        {
+          "id": "jeo-1:msg-23",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Tapi gak ngapa-ngapain kan?",
+          "kind": "text",
+          "time": "05:53"
+        },
+        {
+          "id": "jeo-1:msg-24",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Ya enggak, tapi gue takut banget anjir",
+          "kind": "text",
+          "time": "05:54"
+        },
+        {
+          "id": "jeo-1:msg-25",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Oke tarik napas, gue otw",
+          "kind": "text",
+          "time": "05:54"
+        },
+        {
+          "id": "jeo-1:msg-26",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Je, dia nangis",
+          "kind": "text",
+          "time": "05:55",
+          "cue": "suara nangis"
+        },
+        {
+          "id": "jeo-1:msg-27",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Katanya dia pengen makan",
+          "kind": "text",
+          "time": "05:55"
+        },
+        {
+          "id": "jeo-1:msg-28",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Dia pengen makan bareng gue",
+          "kind": "text",
+          "time": "05:55"
+        },
+        {
+          "id": "jeo-1:msg-29",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Ini junghwan beneran bukan Je?",
+          "kind": "text",
+          "time": "05:55"
+        },
+        {
+          "id": "jeo-1:msg-30",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Je tolong ...",
+          "kind": "text",
+          "time": "05:55"
+        },
+        {
+          "id": "jeo-1:msg-31",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Gue mesti gimana?",
+          "kind": "text",
+          "time": "05:55"
+        },
+        {
+          "id": "jeo-1:msg-32",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Jangan. Buka. Pintu lo. Untuk dia.",
+          "kind": "text",
+          "time": "05:56"
+        },
+        {
+          "id": "jeo-1:msg-33",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Ngerti?",
+          "kind": "text",
+          "time": "05:56"
+        },
+        {
+          "id": "jeo-1:msg-34",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Lo harus cepet kabur pas dia lengah. Kabur dari rumah itu",
+          "kind": "text",
+          "time": "05:56"
+        },
+        {
+          "id": "jeo-1:msg-35",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Ngerti?",
+          "kind": "text",
+          "time": "05:57"
+        },
+        {
+          "id": "jeo-1:msg-36",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Suaranya ilang",
+          "kind": "text",
+          "time": "05:58"
+        },
+        {
+          "id": "jeo-1:msg-37",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Gue sekarang mau keluar rumah",
+          "kind": "text",
+          "time": "05:58"
+        },
+        {
+          "id": "jeo-1:msg-38",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Oke, temuin gue di depan",
+          "kind": "text",
+          "time": "05:58"
+        }
+      ]
+    },
+    {
+      "id": "group-4",
+      "chatId": "group",
+      "sheet": "GRUP Ujang Kedu (4)",
+      "messages": [
+        {
+          "id": "group-4:msg-67",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Anaknya udah bareng gue",
+          "kind": "text",
+          "time": "05:59"
+        },
+        {
+          "id": "group-4:msg-68",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "syukurlah",
+          "kind": "text",
+          "time": "05:59"
+        },
+        {
+          "id": "group-4:msg-69",
+          "sender": "Bang Ji",
+          "isSelf": false,
+          "text": "🙂",
+          "kind": "text",
+          "time": "05:59"
+        },
+        {
+          "id": "group-4:msg-70",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Je? Kok gue sendiri lagi?",
+          "kind": "text",
+          "time": "06:00"
+        },
+        {
+          "id": "group-4:msg-71",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Lo dimana?",
+          "kind": "text",
+          "time": "06:00"
+        },
+        {
+          "id": "group-4:msg-72",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Tugas lo kan cari toko listrik itu sendirian sa",
+          "kind": "text",
+          "time": "06:00"
+        },
+        {
+          "id": "group-4:msg-73",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Bukan sama gue",
+          "kind": "text",
+          "time": "06:00"
+        },
+        {
+          "id": "group-4:msg-74",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Eh lo gila ya?",
+          "kind": "text",
+          "time": "06:00"
+        },
+        {
+          "id": "group-4:msg-75",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Masa gue ditinggalin sendirian buat beli lampu sementara lo balik lagi?",
+          "kind": "text",
+          "time": "06:01"
+        },
+        {
+          "id": "group-4:msg-76",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Tugas gue cuma bikin lo pilih keluar bareng gue",
+          "kind": "text",
+          "time": "06:01"
+        },
+        {
+          "id": "group-4:msg-77",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Dibanding diem di sana bareng junghwan",
+          "kind": "text",
+          "time": "06:01"
+        },
+        {
+          "id": "group-4:msg-78",
+          "sender": "Jeo",
+          "isSelf": false,
+          "text": "Karena junghwan yang asli ada di sini",
+          "kind": "text",
+          "time": "06:01"
+        },
+        {
+          "id": "group-4:msg-79",
+          "sender": "Junghwan",
+          "isSelf": false,
+          "text": "Abang ... lanjutin beli lampunya",
+          "kind": "text",
+          "time": "06:02"
+        },
+        {
+          "id": "group-4:msg-80",
+          "sender": "Junghwan",
+          "isSelf": false,
+          "text": "Itu bukan aku",
+          "kind": "text",
+          "time": "06:03"
+        },
+        {
+          "id": "group-4:msg-81",
+          "sender": "Junghwan",
+          "isSelf": false,
+          "text": "Lanjutin perjalanan abang ya, aku juga pengen makan. Tapi itu bukan aku.",
+          "kind": "text",
+          "time": "06:03"
+        },
+        {
+          "id": "group-4:msg-82",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Hah? Apa sih?",
+          "kind": "text",
+          "time": "06:04"
+        },
+        {
+          "id": "group-4:msg-83",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "anjrti",
+          "kind": "text",
+          "time": "06:04"
+        },
+        {
+          "id": "group-4:msg-84",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Jae gila",
+          "kind": "text",
+          "time": "06:04"
+        },
+        {
+          "id": "group-4:msg-85",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Jae nbejar geu lkagi",
+          "kind": "text",
+          "time": "06:04"
+        },
+        {
+          "id": "group-4:msg-86",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Jae ad/ad disan akan",
+          "kind": "text",
+          "time": "06:04"
+        },
+        {
+          "id": "group-4:msg-87",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "do epnginapam",
+          "kind": "text",
+          "time": "06:05"
+        },
+        {
+          "id": "group-4:msg-88",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Gak msungin aindi jae yg nbeghar gyue",
+          "kind": "text",
+          "time": "06:05"
+        },
+        {
+          "id": "group-4:msg-89",
+          "sender": "Bang Ochi",
+          "isSelf": false,
+          "text": "Itu beneran jae",
+          "kind": "text",
+          "time": "06:05"
+        },
+        {
+          "id": "group-4:msg-90",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Kasykjnya geu udah lihat troko lampunay",
+          "kind": "text",
+          "time": "06:09"
+        },
+        {
+          "id": "group-4:msg-91",
+          "sender": "Asahi",
+          "isSelf": true,
+          "text": "Gue udh lihat yg terang",
+          "kind": "text",
+          "time": "06:09"
+        },
+        {
+          "id": "group-4:msg-92",
+          "sender": "Bang Ucuk",
+          "isSelf": false,
+          "text": "good job, asahi.",
+          "kind": "text",
+          "time": "06:10"
+        }
+      ]
+    }
+  ]
+}

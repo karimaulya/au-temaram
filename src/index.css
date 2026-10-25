@@ -17,7 +17,7 @@ body,
   border: 10px solid #121214;
   border-radius: 54px;
   box-shadow: 0 0 0 2px #3b3b40, 0 0 0 3px #18181a, 0 35px 80px rgba(0, 0, 0, 0.85);
-  transform: scale(0.78);
+  transform: scale(0.75);
   transform-origin: center;
 }
 
@@ -64,3 +64,19 @@ body,
 .animate-shake {
   animation: shake 0.38s ease-in-out;
 }
+/* ---- efek cerita (AU Temaram) ---- */
+@keyframes rumble {
+  0%, 100% { transform: translate(0, 0); }
+  15% { transform: translate(-4px, 2px); }
+  30% { transform: translate(5px, -2px); }
+  45% { transform: translate(-5px, -1px); }
+  60% { transform: translate(4px, 2px); }
+  75% { transform: translate(-3px, 1px); }
+}
+.animate-rumble { animation: rumble 0.7s ease-in-out; }
+
+@keyframes banner-in {
+  from { transform: translateY(-120%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.animate-banner { animation: banner-in 0.35s cubic-bezier(0.2, 0.9, 0.25, 1); }

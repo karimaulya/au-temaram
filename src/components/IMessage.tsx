@@ -1,307 +1,220 @@
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { useStory, useChatPlayback, STORY_DATA } from '../story/StoryProvider';
+import Keyboard from './Keyboard';
+import { separatorFor } from '../story/chatTime';
 
-// Data avatar profil anggota grup sesuai screenshot AU
-const GROUP_MEMBERS = [
-  { id: 'm1', name: 'Gama', avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=200&auto=format&fit=crop' },
-  { id: 'm2', name: 'Juan', avatar: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?q=80&w=200&auto=format&fit=crop' },
-  { id: 'm3', name: 'Ryul', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop' },
-  { id: 'm4', name: 'Jihoon', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop' },
-  { id: 'm5', name: 'Nadhif', avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=200&auto=format&fit=crop' },
-  { id: 'm6', name: 'Adilla', avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=200&auto=format&fit=crop' },
-  { id: 'm7', name: 'Junyoung', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop' },
-];
+// Nama tampilan per chat (judul sheet bukan selalu nama yang diinginkan).
+const LABELS: Record<string, string> = {
+  group: 'Ujang Kedu💙', jae: 'Jae berisik', owner: 'Temaram Guest House', ucuk: 'Bang Ucuk', jeo: 'Jeo', mia: 'Mia', prev: 'Ujang Kedu💙',
+};
+// Foto profil: isi dengan path di /public, mis. 'Jae berisik': '/avatars/jae.jpg'. Kosong -> inisial berwarna.
+const AVATARS: Record<string, string> = {
+  'Jae berisik': '/Avatar/Jae berisik.jpeg',
+  'Ujang Kedu💙': '/Avatar/Ujang Kedu.jpg',
+  'Bang Ucuk': '/Avatar/Bang Ucuk.jpeg',
+  'Jeo': '/Avatar/Jeo.jpeg',
+  'Bang Ajun': '/Avatar/Bang Ajun.jpeg',
+  'Bang Ji': '/Avatar/Bang Ji.jpeg',
+  'Bang Ochi': '/Avatar/Bang Ochi.jpeg',
+  'Doyie': '/Avatar/Doyie.jpeg',
+  'Haruto': '/Avatar/Haruto.jpeg',
+  'Junghwan': '/Avatar/Junghwan.jpeg',
 
-const getSenderAvatar = (senderName: string) => {
-  const member = GROUP_MEMBERS.find(m => m.name.toLowerCase() === senderName.toLowerCase());
-  return member?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop';
 };
 
-// Foto profil grup utama (aesthetic group portrait AU)
-const GROUP_PROFILE_PIC = 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=200&auto=format&fit=crop';
+// Chat di luar xlsx (tetap ada setelah chat dihapus, step 25). TODO: isi chat grup H-1 kecelakaan.
+const EXTRA_CHATS = [{ id: 'prev', title: 'Ujang Kedu💙', isGroup: true }];
 
-const INITIAL_CHATS = [
-  { 
-    id: 3, 
-    name: 'Menuju Tak Terbatas🚀', 
-    message: 'Gama: Iya seenggaknya buat sekarang gue...', 
-    time: '14:48', 
-    unread: 2, 
-    isGroup: true,
-    groupAvatar: GROUP_PROFILE_PIC
-  },
-  { 
-    id: 2, 
-    name: 'abang junyoung', 
-    message: 'hahahaha iyaa abaaang', 
-    time: 'Yesterday', 
-    unread: 0, 
-    isGroup: false,
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop'
-  },
-  { 
-    id: 1, 
-    name: 'Unknown', 
-    message: 'Foto', 
-    time: 'Tuesday', 
-    unread: 0, 
-    isGroup: false,
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop'
-  },
-];
+function Avatar({ name, size = 28 }: { name: string; size?: number }) {
+  const src = AVATARS[name];
+  // ukuran dikunci (width/height/min/max + flex) supaya tidak gepeng & tidak menggeser bubble
+  const box = { width: size, height: size, minWidth: size, maxWidth: 'none', flex: `0 0 ${size}px` } as const;
+  if (src) return <img src={encodeURI(src)} alt={name} style={box} className="aspect-square rounded-full object-cover" />;
+  let h = 0; for (const c of name) h = (h * 31 + c.charCodeAt(0)) % 360;
+  return (
+    <div style={{ ...box, background: `hsl(${h} 45% 55%)`, fontSize: size * 0.4 }}
+      className="flex items-center justify-center rounded-full font-semibold text-white">
+      {name.replace(/^(Bang|Abang)\s+/i, '').slice(0, 1).toUpperCase()}
+    </div>
+  );
+}
 
-const INITIAL_MESSAGES: Record<number, { id: number; sender: string; text: string }[]> = {
-  3: [
-    { id: 1, sender: 'Juan', text: 'Weh santai' },
-    { id: 2, sender: 'Juan', text: 'Gue malah takut lo kenapa2 jir gam' },
-    { id: 3, sender: 'Gama', text: 'Biar gue urus sendiri ya' },
-    { id: 4, sender: 'Gama', text: 'Sorry sorry' },
-    { id: 5, sender: 'Gama', text: 'Ini di jalan' },
-    { id: 6, sender: 'Gama', text: 'Boleh tolong hadepin ke belakang supaya abang2 gak tau?' },
-    { id: 7, sender: 'Gama', text: 'Biar mereka kira itu karangan bunga biasa' },
-    { id: 8, sender: 'me', text: 'Nanti mereka juga bakal tau kali gam' },
-    { id: 9, sender: 'Gama', text: 'Iya seenggaknya buat sekarang gue gak mau bikin mereka khawatir' },
-  ],
-  2: [
-    { id: 1, sender: 'abang junyoung', text: 'makan makan yuk abang sama bang jihoon? habis itu ke makam mama papa. aku ajak ryul juga' },
-    { id: 2, sender: 'me', text: 'Boleh, adek. Nanti abang bilangin ke jihoon ya' },
-    { id: 3, sender: 'abang junyoung', text: 'okayy' },
-    { id: 4, sender: 'abang junyoung', text: 'tapi kalau misal aku ga pulang' },
-    { id: 5, sender: 'abang junyoung', text: 'aku berharap abang bahagia selamanya' },
-    { id: 6, sender: 'me', text: 'Kenapa gitu ngomongnya?' },
-    { id: 7, sender: 'abang junyoung', text: 'gak tau. pengen ngomong gitu aja' },
-    { id: 8, sender: 'me', text: 'Gak usah ngomong ngawur. Kamu pasti bakal pulang lah' },
-    { id: 9, sender: 'abang junyoung', text: 'hahahaha iyaa abaaang' },
-  ],
-  1: [
-    { id: 1, sender: 'Unknown', text: 'Tolong cek file yang saya kirim.' }
-  ]
-};
+function Inbox() {
+  const { state, openChat } = useStory();
+  const allChats = [...STORY_DATA.chats, ...EXTRA_CHATS.filter(e => !STORY_DATA.chats.some(c => c.id === e.id))];
 
-export default function IMessage() {
-  const [activeChat, setActiveChat] = useState<number | null>(3);
-  const [messages, setMessages] = useState(INITIAL_MESSAGES);
-  const [inputText, setInputText] = useState('');
-  const chatScrollRef = useRef<HTMLDivElement>(null);
-
-  const chatData = INITIAL_CHATS.find(c => c.id === activeChat);
-  const currentMessages = activeChat ? messages[activeChat] || [] : [];
-
-  useEffect(() => {
-    if (activeChat) {
-      const chatScroll = chatScrollRef.current;
-      chatScroll?.scrollTo({ top: chatScroll.scrollHeight, behavior: 'smooth' });
-    }
-  }, [activeChat, messages]);
-
-  const handleSendMessage = () => {
-    if (!inputText.trim() || !activeChat) return;
-    const newMsg = {
-      id: Date.now(),
-      sender: 'me',
-      text: inputText.trim()
-    };
-    setMessages(prev => ({
-      ...prev,
-      [activeChat]: [...(prev[activeChat] || []), newMsg]
-    }));
-    setInputText('');
-  };
+  const rows = allChats.map(meta => {
+    const chunks = STORY_DATA.chunks.filter(k => k.chatId === meta.id && state.unlockedChunks.includes(k.id));
+    const isExtra = EXTRA_CHATS.some(e => e.id === meta.id);
+    const lastUnlock = Math.max(-1, ...chunks.map(k => state.unlockedChunks.indexOf(k.id)));
+    const shown = chunks.flatMap(k => k.messages.slice(0, state.progress[k.id] ?? 0));
+    const live = shown.filter(m => !m.dateLabel);
+    const last = live[live.length - 1] ?? shown[shown.length - 1];   // chat lama (mis. grup 2025) tetap punya preview
+    const notif = [...state.notifs].reverse().find(n => n.chatId === meta.id);
+    const unread = state.notifs.filter(n => n.chatId === meta.id).length;
+    return { meta, chunks, isExtra, lastUnlock, last, notif, unread };
+  })
+    .filter(r => (state.wipedKeep ? state.wipedKeep.includes(r.meta.id) : r.chunks.length > 0 && !r.isExtra) || (state.wipedKeep && r.isExtra && state.wipedKeep.includes(r.meta.id)))
+    .sort((a, b) => b.lastUnlock - a.lastUnlock);
 
   return (
-    <div className="flex h-full w-full flex-col bg-white">
-      
-      {!activeChat ? (
-        // ==============================
-        // TAMPILAN 1: DAFTAR PESAN (INBOX)
-        // ==============================
-        <div className="flex h-full flex-col text-black pt-[48px]">
-          {/* Header */}
-          <div className="flex justify-between px-4 pb-2 pt-1 text-[16px] font-normal text-[#007aff]">
-            <button className="active:opacity-50">Edit</button>
-            <button className="active:opacity-50">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-            </button>
-          </div>
-          
-          <h1 className="mb-2 px-4 text-[32px] font-bold tracking-tight">Messages</h1>
-          
-          {/* Search Bar */}
-          <div className="mb-2 px-4">
-            <div className="flex items-center gap-1.5 rounded-[10px] bg-gray-100 p-1.5 px-2 text-[15px] text-gray-500">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-              Search
-            </div>
-          </div>
-
-          {/* Chat List */}
-          <div className="flex-1 overflow-y-auto px-4 divide-y divide-gray-100">
-            {INITIAL_CHATS.map((chat) => (
-              <div 
-                key={chat.id} 
-                onClick={() => setActiveChat(chat.id)}
-                className="flex items-center gap-3 py-3 cursor-pointer active:opacity-60 transition-opacity"
-              >
-                <div className="relative h-12 w-12 rounded-full overflow-hidden bg-gray-200 shrink-0">
-                  <img 
-                    src={chat.isGroup ? chat.groupAvatar : chat.avatar} 
-                    alt={chat.name} 
-                    className="h-full w-full object-cover" 
-                  />
+    <div className="flex h-full min-h-0 flex-col pt-[48px] text-black">
+      <div className="flex justify-between px-4 pb-2 pt-1 text-[16px] text-[#007aff]">
+        <span>Edit</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+      </div>
+      <h1 className="mb-2 px-4 text-[32px] font-bold tracking-tight">Messages</h1>
+      <div className="mb-2 px-4">
+        <div className="flex items-center gap-1.5 rounded-[10px] bg-gray-100 p-1.5 px-2 text-[15px] text-gray-500">Search</div>
+      </div>
+      <div className="min-h-0 flex-1 divide-y divide-gray-100 overflow-y-auto px-4 no-scrollbar [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {rows.length === 0 && <p className="pt-10 text-center text-[14px] text-gray-400">Tidak ada pesan</p>}
+        {rows.map(({ meta, last, notif, unread }) => {
+          const label = LABELS[meta.id] ?? meta.title;
+          const preview = last ? `${meta.isGroup && !last.isSelf ? last.sender + ': ' : ''}${last.text}` : notif ? notif.text : '';
+          return (
+            <div key={meta.id} onClick={() => openChat(meta.id)} className="flex cursor-pointer items-center gap-3 py-3 active:opacity-60 transition-opacity">
+              <Avatar name={label} size={48} />
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between">
+                  <span className="truncate text-[16px] font-semibold">{label}</span>
+                  <span className="text-[13px] text-gray-400">{last?.time ?? ''}</span>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex justify-between items-center">
-                    <span className="text-[16px] font-semibold text-black truncate">{chat.name}</span>
-                    <span className="text-[13px] text-gray-400">{chat.time}</span>
-                  </div>
-                  <p className="text-[14px] text-gray-500 truncate">{chat.message}</p>
-                </div>
-                {chat.unread > 0 && (
-                  <span className="h-5 min-w-[20px] rounded-full bg-[#007aff] px-1.5 text-center text-[12px] font-bold text-white flex items-center justify-center">
-                    {chat.unread}
-                  </span>
-                )}
+                <p className="truncate text-[14px] text-gray-500">{preview}</p>
               </div>
-            ))}
+              {unread > 0 && <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#007aff] px-1.5 text-[12px] font-bold text-white">{unread}</span>}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function ChatRoom({ chatId }: { chatId: string }) {
+  const { openChat, openPage } = useStory();
+  const p = useChatPlayback(chatId);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const composerRef = useRef<HTMLDivElement>(null);
+  const meta = [...STORY_DATA.chats, ...EXTRA_CHATS].find(c => c.id === chatId);
+  const label = LABELS[chatId] ?? meta?.title ?? '';
+  const isGroup = !!meta?.isGroup;
+  const msgs = p.messages;
+  const seps = msgs.map((m, i) => separatorFor(m, msgs[i - 1]));   // timestamp di tengah room chat
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
+  }, [msgs.length, p.typing, p.composing, p.composerText]);
+
+  // teks yang diketik lebih dari 1 baris: kolom ketik membesar ke atas & selalu menampilkan baris terakhir
+  useEffect(() => { composerRef.current?.scrollTo({ top: composerRef.current.scrollHeight }); }, [p.composerText]);
+
+  return (
+    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-white">
+      <div className="z-20 flex items-center justify-between border-b border-gray-100/80 bg-white/95 px-3 pb-2 pt-[44px] backdrop-blur-md">
+        <button onClick={() => openChat(null)} className="-ml-1 flex items-center py-1 pr-2 text-[#007aff] active:opacity-60" title="Kembali">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <div className="-ml-2 flex flex-1 flex-col items-center justify-center">
+          <Avatar name={label} size={40} />
+          <div className="mt-1 flex items-center gap-1 text-[12px] font-semibold leading-tight text-black">
+            <span>{label}</span><span className="text-[11px] font-normal text-gray-400">›</span>
           </div>
         </div>
-      ) : (
-        // ==============================
-        // TAMPILAN 2: RUANG OBROLAN (ROOMCHAT)
-        // ==============================
-        <div className="flex h-full flex-col bg-white">
-          
-          {/* Header Roomchat iOS: Satu Foto Profil Grup Saja */}
-          <div className="z-20 flex items-center justify-between bg-white/95 px-3 pt-[44px] pb-2 border-b border-gray-100/80 backdrop-blur-md">
-            
-            {/* Tombol Back Chevron Biru */}
-            <button 
-              onClick={() => setActiveChat(null)} 
-              className="flex items-center text-[#007aff] active:opacity-60 -ml-1 py-1 pr-2"
-              title="Kembali"
-            >
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-            </button>
+        <div className="w-7"></div>
+      </div>
 
-            {/* Bagian Tengah Header: Satu Foto Profil Grup + Nama Grup */}
-            <div className="flex flex-1 flex-col items-center justify-center -ml-2">
-              <div className="h-10 w-10 rounded-full overflow-hidden border border-white shadow-sm ring-1 ring-black/10">
-                <img 
-                  src={chatData?.isGroup ? chatData?.groupAvatar : chatData?.avatar} 
-                  alt={chatData?.name} 
-                  className="h-full w-full object-cover" 
-                />
-              </div>
-              <div className="flex items-center gap-1 mt-1 text-[12px] font-semibold text-black leading-tight cursor-pointer active:opacity-60">
-                <span>{chatData?.name}</span>
-                <span className="text-[11px] text-gray-400 font-normal">›</span>
-              </div>
-            </div>
-
-            {/* Penyeimbang Kanan */}
-            <div className="w-7"></div>
-          </div>
-          
-          {/* Area Chat Bubbles */}
-          <div ref={chatScrollRef} className="flex-1 overflow-y-auto px-3.5 py-3 flex flex-col gap-[3px]">
-            {currentMessages.map((msg, index) => {
-              const isMe = msg.sender === 'me';
-              const isNextSame = currentMessages[index + 1]?.sender === msg.sender;
-              const isPrevSame = currentMessages[index - 1]?.sender === msg.sender;
-              
-              const showSenderName = chatData?.isGroup && !isMe && !isPrevSame;
-              const showAvatar = chatData?.isGroup && !isMe && !isNextSame;
-              const senderAvatar = getSenderAvatar(msg.sender);
-              const bubbleShape = isMe
-                ? `${isPrevSame ? 'rounded-tr-[6px]' : ''} ${isNextSame ? 'rounded-br-[6px]' : 'rounded-br-[4px]'}`
-                : `${isPrevSame ? 'rounded-tl-[6px]' : ''} ${isNextSame ? 'rounded-bl-[6px]' : 'rounded-bl-[4px]'}`;
-
-              return (
-                <div key={msg.id} className={`flex flex-col ${isMe ? 'items-end' : 'items-start'} ${!isNextSame ? 'mb-2.5' : ''}`}>
-                  
-                  {/* Nama Pengirim di Grup Chat */}
-                  {showSenderName && (
-                    <span className="text-[11px] text-gray-400 ml-9 mb-1 font-normal tracking-tight">
-                      {msg.sender}
-                    </span>
-                  )}
-
-                  <div className="flex items-end gap-1.5 max-w-[82%]">
-                    {/* Avatar Pengirim (hanya di bubble terakhir rentetan pesan) */}
-                    {chatData?.isGroup && !isMe && (
-                      showAvatar ? (
-                        <img
-                          src={senderAvatar}
-                          alt={msg.sender}
-                          className="mb-0.5 h-7 w-7 shrink-0 rounded-full object-cover"
-                        />
-                      ) : (
-                        <div className="h-7 w-7 shrink-0" aria-hidden="true" />
-                      )
+      <div ref={scrollRef} className="flex min-h-0 flex-1 flex-col gap-[3px] overflow-y-auto px-3.5 py-3 no-scrollbar [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {msgs.map((msg, i) => {
+          const isMe = msg.isSelf;
+          const prev = msgs[i - 1], next = msgs[i + 1];
+          const sep = seps[i];
+          const isPrevSame = !!prev && !prev.dateLabel && prev.sender === msg.sender && !msg.dateLabel && !sep;
+          const isNextSame = !!next && !next.dateLabel && next.sender === msg.sender && !seps[i + 1];
+          const showName = isGroup && !isMe && !isPrevSame;
+          const showAvatar = isGroup && !isMe && !isNextSame;
+          const shape = isMe
+            ? `${isPrevSame ? 'rounded-tr-[6px]' : ''} ${isNextSame ? 'rounded-br-[6px]' : 'rounded-br-[4px]'}`
+            : `${isPrevSame ? 'rounded-tl-[6px]' : ''} ${isNextSame ? 'rounded-bl-[6px]' : 'rounded-bl-[4px]'}`;
+          const isLink = msg.kind === 'link' || /^link berita$/i.test(msg.text);
+          return (
+            <div key={msg.id}>
+              {sep && <div className="my-2 text-center text-[11px] font-medium text-gray-400">{sep}</div>}
+              <div className={`flex flex-col ${isMe ? 'items-end' : 'items-start'} ${!isNextSame ? 'mb-2.5' : ''}`}>
+                {showName && <span className="mb-1 ml-9 text-[11px] tracking-tight text-gray-400">{msg.sender}</span>}
+                <div className="flex max-w-[82%] items-end gap-1.5">
+                  {isGroup && !isMe && (showAvatar ? <div className="mb-0.5 h-7 w-7 shrink-0"><Avatar name={msg.sender} /></div> : <div className="h-7 w-7 shrink-0" />)}
+                  <div
+                    onClick={isLink ? () => openPage('news') : undefined}
+                    className={`relative break-words px-3.5 py-2 text-[15px] leading-snug rounded-[18px] ${shape} ${
+                      isMe ? 'bg-[#007aff] text-white' : 'bg-[#e9e9eb] text-black'
+                    } ${isLink ? 'cursor-pointer underline' : ''}`}
+                  >
+                    <span>{msg.kind === 'location' ? '📍 Shared location' : msg.kind === 'file' ? `📎 ${msg.text}` : msg.text}</span>
+                    {msg.time && (
+                      <span className={`float-right ml-2.5 mt-[7px] select-none text-[10px] leading-none ${isMe ? 'text-white/70' : 'text-black/40'}`}>
+                        {msg.time}
+                      </span>
                     )}
-
-                    {/* Bubble Pesan */}
-                    <div 
-                      className={`relative px-3.5 py-2 text-[15px] leading-snug break-words ${
-                        isMe 
-                          ? 'bg-[#007aff] text-white rounded-[18px]'
-                          : 'bg-[#e9e9eb] text-black rounded-[18px]'
-                      } ${bubbleShape}`}
-                    >
-                      {msg.text}
-                      {!isNextSame && (
-                        <svg
-                          aria-hidden="true"
-                          className={`absolute bottom-0 h-4 w-4 ${isMe ? '-right-2 scale-x-[-1]' : '-left-2'}`}
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            d="M16 0C15 6 12 10 5 13L0 16L8 15C13 13 16 9 16 4Z"
-                            fill={isMe ? '#007aff' : '#e9e9eb'}
-                          />
-                        </svg>
-                      )}
-                    </div>
+                    {!isNextSame && (
+                      <svg aria-hidden="true" className={`absolute bottom-0 h-4 w-4 ${isMe ? '-right-2 scale-x-[-1]' : '-left-2'}`} viewBox="0 0 16 16">
+                        <path d="M16 0C15 6 12 10 5 13L0 16L8 15C13 13 16 9 16 4Z" fill={isMe ? '#007aff' : '#e9e9eb'} />
+                      </svg>
+                    )}
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            </div>
+          );
+        })}
 
-          {/* Area Input Pesan di Bawah */}
-          <div className="p-2.5 pb-6 border-t border-gray-100 flex items-center gap-2 bg-white">
-            <button className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-gray-600 active:scale-95">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            </button>
-            
-            <div className="relative flex-1 flex items-center">
-              <input 
-                type="text" 
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                placeholder="iMessage"
-                className="w-full rounded-full border border-gray-300 px-4 py-1.5 text-[15px] text-black outline-none focus:border-[#007aff]"
-              />
-              {inputText.trim() ? (
-                <button 
-                  onClick={handleSendMessage}
-                  className="absolute right-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-[#007aff] text-white active:scale-90 transition-transform"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
-                </button>
-              ) : (
-                <button className="absolute right-2.5 text-gray-400">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-                </button>
-              )}
+        {p.typing && p.typingSender && (
+          <div className="flex items-end gap-1.5">
+            {isGroup && <Avatar name={p.typingSender} />}
+            <div className="flex gap-1 rounded-[18px] bg-[#e9e9eb] px-4 py-3">
+              {[0, 1, 2].map(i => <span key={i} className="h-2 w-2 animate-bounce rounded-full bg-gray-400" style={{ animationDelay: `${i * 0.15}s` }} />)}
             </div>
           </div>
+        )}
+      </div>
 
-        </div>
+      {/* Kolom ketik: terisi otomatis dengan balasan Asahi berikutnya, user tinggal kirim */}
+      {p.blockedBy && (
+        <button
+          onClick={() => openChat(p.blockedBy)}
+          className="mx-3 mb-1 rounded-xl bg-gray-100 px-3 py-2 text-center text-[12px] text-gray-500 active:opacity-60"
+        >
+          Balas dulu chat <b>{LABELS[p.blockedBy] ?? p.blockedBy}</b> sebelum lanjut ke sini
+        </button>
       )}
+      <div className={`flex items-end gap-2 border-t border-gray-100 bg-white p-2.5 ${p.composing ? 'pb-2' : 'pb-6'}`}>
+        <div className="mb-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-200 text-gray-600">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </div>
+        <div className="relative flex-1">
+          <div
+            ref={composerRef}
+            className="max-h-[112px] min-h-[34px] w-full overflow-y-auto whitespace-pre-wrap break-words rounded-[18px] border border-gray-300 px-4 py-1.5 pr-10 text-[15px] leading-snug text-black no-scrollbar [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {p.composerText || <span className="text-gray-400">iMessage</span>}
+          </div>
+          {p.canSend && (
+            <button onClick={p.send} className="absolute bottom-1.5 right-1.5 flex h-7 w-7 animate-pulse items-center justify-center rounded-full bg-[#007aff] text-white transition-transform active:scale-90">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+            </button>
+          )}
+        </div>
+      </div>
+      {p.composing && <Keyboard lastChar={p.lastTyped} tick={p.typedTick} canSend={p.canSend} onSend={p.send} />}
+    </div>
+  );
+}
 
+export default function IMessage() {
+  const { state } = useStory();
+  return (
+    <div className="flex h-full w-full flex-col bg-white">
+      {state.openChat ? <ChatRoom chatId={state.openChat} /> : <Inbox />}
     </div>
   );
 }
