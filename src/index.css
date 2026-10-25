@@ -4,6 +4,35 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+.phone-frame {
+  width: 393px;
+  height: 852px;
+  border: 10px solid #121214;
+  border-radius: 54px;
+  box-shadow: 0 0 0 2px #3b3b40, 0 0 0 3px #18181a, 0 35px 80px rgba(0, 0, 0, 0.85);
+  transform: scale(0.78);
+  transform-origin: center;
+}
+
+@media (max-width: 600px), (max-height: 500px) {
+  .phone-frame {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    transform: none;
+  }
+}
+
 /* Global: Sembunyikan scrollbar di semua browser tapi tetap bisa di-scroll */
 *, *::before, *::after {
   scrollbar-width: none !important;

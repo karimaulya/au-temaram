@@ -33,15 +33,7 @@ export default function App() {
       
       <div 
         id="phone"
-        className="relative flex flex-col overflow-hidden bg-black shrink-0 shadow-[0_0_0_2px_#3b3b40,0_0_0_3px_#18181a,0_35px_80px_rgba(0,0,0,0.85)]"
-        style={{
-          width: '393px',
-          height: '852px',
-          borderRadius: '54px',
-          border: '10px solid #121214',
-          transform: 'scale(0.78)',
-          transformOrigin: 'center'
-        }}
+        className="phone-frame relative flex shrink-0 flex-col overflow-hidden bg-black"
       >
         
         {/* Dynamic Island */}

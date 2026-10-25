@@ -54,10 +54,10 @@ export default function Instagram() {
       {/* TAMPILAN 1: BERANDA FEED (SESUAI SCREENSHOT 1) */}
       {/* ======================================================== */}
       {currentTab === 'feed' && (
-        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-y-contain no-scrollbar pt-[44px] pb-[88px]">
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-y-contain touch-pan-y no-scrollbar pt-[44px] pb-[88px]">
           
           {/* Header Instagram Terbaru */}
-          <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100">
+          <div className="flex flex-none items-center justify-between px-4 py-2 border-b border-gray-100">
             {/* Tombol Buat (+) */}
             <button className="text-black active:opacity-50">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -83,7 +83,7 @@ export default function Instagram() {
           </div>
 
           {/* Stories Tray */}
-          <div className="flex items-center gap-3.5 overflow-x-auto px-3.5 py-3 border-b border-gray-100 no-scrollbar">
+          <div className="flex flex-none items-center gap-3.5 overflow-x-auto px-3.5 py-3 border-b border-gray-100 no-scrollbar">
             {STORIES.map((s) => (
               <div key={s.id} className="flex flex-col items-center shrink-0 cursor-pointer group active:opacity-80">
                 <div className="relative">
@@ -111,7 +111,7 @@ export default function Instagram() {
           </div>
 
           {/* Feed Post: Official KVibes (Persis Screenshot 1) */}
-          <div className="flex flex-col border-b border-gray-100 pb-3">
+          <div className="flex flex-none flex-col border-b border-gray-100 pb-3">
             
             {/* Header Postingan */}
             <div className="flex items-center justify-between px-3.5 py-2.5">
@@ -177,9 +177,14 @@ export default function Instagram() {
             <div className="flex items-center justify-between px-3.5 pt-3 pb-1 text-black">
               <div className="flex items-center gap-4">
                 {/* Love */}
-                <button onClick={() => setIsLiked(!isLiked)} className="active:scale-125 transition-transform">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill={isLiked ? "#ff3040" : "none"} stroke={isLiked ? "#ff3040" : "currentColor"} strokeWidth="1.9">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                <button
+                  onClick={() => setIsLiked(!isLiked)}
+                  className="active:scale-125 transition-transform"
+                  aria-label={isLiked ? 'Unlike post' : 'Like post'}
+                  aria-pressed={isLiked}
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill={isLiked ? '#ff3040' : 'none'} stroke={isLiked ? '#ff3040' : 'currentColor'} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                   </svg>
                 </button>
                 {/* Comment */}
@@ -212,6 +217,68 @@ export default function Instagram() {
 
           </div>
 
+          {/* Postingan kedua agar feed dapat digulir */}
+          <div className="flex flex-none flex-col border-b border-gray-100 pb-3">
+            <div className="flex items-center justify-between px-3.5 py-2.5">
+              <div className="flex items-center gap-2.5">
+                <img
+                  src={PROFILE.avatar}
+                  alt={PROFILE.username}
+                  className="h-8 w-8 rounded-full object-cover"
+                />
+                <div>
+                  <span className="text-[13px] font-bold text-black">{PROFILE.username}</span>
+                  <p className="text-[11px] text-gray-500">Jakarta Selatan</p>
+                </div>
+              </div>
+              <button className="text-gray-900 active:opacity-50" aria-label="Opsi postingan">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <circle cx="5" cy="12" r="1.5"></circle>
+                  <circle cx="12" cy="12" r="1.5"></circle>
+                  <circle cx="19" cy="12" r="1.5"></circle>
+                </svg>
+              </button>
+            </div>
+
+            <div className="relative aspect-[4/5] w-full overflow-hidden bg-zinc-200">
+              <img
+                src={PROFILE_POSTS[0].img}
+                alt="Postingan Instagram"
+                className="h-full w-full object-cover"
+              />
+            </div>
+
+            <div className="flex items-center justify-between px-3.5 pt-3 pb-1 text-black">
+              <div className="flex items-center gap-4">
+                <button className="active:opacity-50" aria-label="Suka">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
+                </button>
+                <button className="active:opacity-50" aria-label="Komentar">
+                  <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                  </svg>
+                </button>
+                <button className="active:opacity-50" aria-label="Bagikan">
+                  <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                </button>
+              </div>
+              <button className="active:opacity-50" aria-label="Simpan">
+                <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9">
+                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </button>
+            </div>
+            <p className="px-3.5 text-[12px] text-black">
+              <span className="font-bold">{PROFILE.username}</span> little moments lately ✨
+            </p>
+            <div className="px-3.5 pt-1 text-[11px] text-gray-400">1 day ago</div>
+          </div>
+
         </div>
       )}
 
@@ -219,7 +286,7 @@ export default function Instagram() {
       {/* TAMPILAN 2: PROFIL @OWNERSAHI (SESUAI SCREENSHOT 2) */}
       {/* ======================================================== */}
       {currentTab === 'profile' && (
-        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-y-contain no-scrollbar pt-[44px] pb-[88px]">
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-y-contain touch-pan-y no-scrollbar pt-[44px] pb-[88px]">
           
           {/* Header Profil */}
           <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100">

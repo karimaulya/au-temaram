@@ -213,6 +213,9 @@ export default function IMessage() {
               const showSenderName = chatData?.isGroup && !isMe && !isPrevSame;
               const showAvatar = chatData?.isGroup && !isMe && !isNextSame;
               const senderAvatar = getSenderAvatar(msg.sender);
+              const bubbleShape = isMe
+                ? `${isPrevSame ? 'rounded-tr-[6px]' : ''} ${isNextSame ? 'rounded-br-[6px]' : 'rounded-br-[4px]'}`
+                : `${isPrevSame ? 'rounded-tl-[6px]' : ''} ${isNextSame ? 'rounded-bl-[6px]' : 'rounded-bl-[4px]'}`;
 
               return (
                 <div key={msg.id} className={`flex flex-col ${isMe ? 'items-end' : 'items-start'} ${!isNextSame ? 'mb-2.5' : ''}`}>
@@ -227,24 +230,38 @@ export default function IMessage() {
                   <div className="flex items-end gap-1.5 max-w-[82%]">
                     {/* Avatar Pengirim (hanya di bubble terakhir rentetan pesan) */}
                     {chatData?.isGroup && !isMe && (
-                      <div className="h-7 w-7 rounded-full overflow-hidden bg-gray-200 shrink-0 mb-0.5">
-                        {showAvatar ? (
-                          <img src={senderAvatar} alt={msg.sender} className="h-full w-full object-cover" />
-                        ) : (
-                          <div className="h-full w-full"></div>
-                        )}
-                      </div>
+                      showAvatar ? (
+                        <img
+                          src={senderAvatar}
+                          alt={msg.sender}
+                          className="mb-0.5 h-7 w-7 shrink-0 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="h-7 w-7 shrink-0" aria-hidden="true" />
+                      )
                     )}
 
                     {/* Bubble Pesan */}
                     <div 
                       className={`relative px-3.5 py-2 text-[15px] leading-snug break-words ${
                         isMe 
-                          ? 'bg-[#007aff] text-white rounded-[18px] rounded-br-[4px]' 
-                          : 'bg-[#e9e9eb] text-black rounded-[18px] rounded-bl-[4px]'
-                      }`}
+                          ? 'bg-[#007aff] text-white rounded-[18px]'
+                          : 'bg-[#e9e9eb] text-black rounded-[18px]'
+                      } ${bubbleShape}`}
                     >
                       {msg.text}
+                      {!isNextSame && (
+                        <svg
+                          aria-hidden="true"
+                          className={`absolute bottom-0 h-4 w-4 ${isMe ? '-right-2 scale-x-[-1]' : '-left-2'}`}
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M16 0C15 6 12 10 5 13L0 16L8 15C13 13 16 9 16 4Z"
+                            fill={isMe ? '#007aff' : '#e9e9eb'}
+                          />
+                        </svg>
+                      )}
                     </div>
                   </div>
                 </div>
