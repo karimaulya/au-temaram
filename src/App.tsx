@@ -22,9 +22,8 @@ import Safari from './components/Safari';
 import Music from './components/Music';
 import FaceTime from './components/FaceTime';
 import Phone from './components/Phone';
-import { STEPS } from './story/script';
 import { useStory } from './story/StoryProvider';
-import { playSadSong } from './story/bgm';
+import { playSadSong, onSadSongEnd, continueSadSong } from './story/bgm';
 import type { Notif } from './story/StoryProvider';
 
 // Retakan layar (step 21). Ganti dengan gambar PNG transparan kalau mau lebih realistis.
@@ -54,14 +53,9 @@ export default function App() {
   const [rumble, setRumble] = useState(false);
   const [cracked, setCracked] = useState(false);
 
-  // cerita selesai (semua step sudah dilewati) -> tawarkan reset progres
-  const finished = state.step >= STEPS.length;
+  // dialog akhir muncul HANYA setelah lagu penutup selesai diputar (lagu tidak loop sampai pembaca memilih lanjut)
   const [showEnd, setShowEnd] = useState(false);
-  useEffect(() => {
-    if (!finished) { setShowEnd(false); return; }
-    const t = setTimeout(() => setShowEnd(true), 1500);
-    return () => clearTimeout(t);
-  }, [finished]);
+  useEffect(() => onSadSongEnd(() => setShowEnd(true)), []);
 
   // lagu sedih penutup: kalau progres tersimpan sudah lewat halaman berita (mis. setelah reload), lanjutkan
   // lagunya (mulai di sentuhan pertama, karena browser memblokir autoplay)
@@ -179,9 +173,19 @@ export default function App() {
           <div className="absolute inset-0 z-[97] flex items-center justify-center bg-black/70 px-8 backdrop-blur-sm">
             <div className="w-full rounded-[28px] border border-white/10 bg-zinc-900/95 p-6 text-center">
               <div className="text-[20px] font-semibold text-white">Cerita selesai</div>
-              <p className="mt-1 text-[14px] text-zinc-400">Mau mengulang dari awal? Progres cerita akan dihapus.</p>
-              <button onClick={reset} className="mt-5 w-full rounded-full bg-[#007aff] py-3 text-[16px] font-semibold text-white active:opacity-70">Mulai ulang cerita</button>
-              <button onClick={() => setShowEnd(false)} className="mt-2 w-full py-2 text-[15px] text-zinc-400 active:opacity-60">Tutup</button>
+              <p className="mt-2 text-[16px] leading-relaxed text-zinc-400">
+                <b className="text-zinc-200">Lanjut baca</b>, tetap di sini dan baca isi HP Asahi. 
+                <br /> atau <br /> <b className="text-zinc-200">Mulai ulang</b> untuk kembali dari awal (progres dihapus).
+              </p>
+              <button
+                onClick={() => { continueSadSong(); setShowEnd(false); }}
+                className="mt-5 w-full rounded-full bg-[#007aff] py-3 text-[16px] font-semibold text-white active:opacity-70"
+              >
+                Lanjut baca
+              </button>
+              <button onClick={reset} className="mt-2 w-full py-2 text-[15px] text-red-400 active:opacity-60">
+                Mulai ulang dari awal
+              </button>
             </div>
           </div>
         )}

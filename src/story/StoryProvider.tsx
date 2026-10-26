@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import raw from './chats.generated.json';
 import extra from './extra.generated.json';   // chat 'mia' + 'prev' (dibuat build_extra.py)
 import { STEPS } from './script';
+import { clearContinueFlag } from './bgm';
 import type { ChatData, Chunk, Effect, Gate, Msg, ScriptLine } from './types';
 
 // Gabungkan data utama + extra. Chat/chunk yang id-nya ada di extra menggantikan versi lama,
@@ -311,7 +312,7 @@ export function StoryProvider({ children }: { children: ReactNode }) {
       if (msg && !msg.dateLabel && !consumeNotifId && !silent) playSfx(MSG_SFX);   // pesan baru masuk / terkirim
     },
     finishChunk: chunkId => dispatch({ t: 'CHUNK_DONE', chunkId }),
-    reset: () => { localStorage.removeItem(SAVE_KEY); location.reload(); },
+    reset: () => { clearContinueFlag(); localStorage.removeItem(SAVE_KEY); location.reload(); },
   }), [state]);
 
   return <StoryCtx.Provider value={value}>{children}</StoryCtx.Provider>;

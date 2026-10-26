@@ -10,16 +10,15 @@ const PROFILE = {
   bio: 'A dan S di nama gue stands for arsitektur harga mati.',
   followers: 568,
   following: 876,
-  avatar: '/Avatar/Asahi.jpeg',
+  avatar: '/IG/Foto Profil.jpeg',
 };
 
-const IG = '/photos/instagram';
 const HIGHLIGHTS = [
   { id: 'new', title: 'New', isAdd: true },
-  { id: 'h1', title: 'Ujang Kedu', img: `${IG}/hl-ujang-kedu.jpg` },
-  { id: 'h2', title: 'Ar(shit)', img: `${IG}/hl-arshit.jpg` },
-  { id: 'h3', title: '🛖', img: `${IG}/hl-gubuk.jpg` },
-  { id: 'h4', title: '⚽', img: `${IG}/hl-bola.jpg` },
+  { id: 'h1', title: 'Ujang Kedu', img: `/IG/hl-ujang-kedu.jpeg` },
+  { id: 'h2', title: 'Ar(shit)', img: `/IG/hl-arshit.jpeg` },
+  { id: 'h3', title: '🛖', img: `/IG/hl-gubuk.jpeg` },
+  { id: 'h4', title: '⚽', img: `/IG/hl-bole.jpeg` },
 ];
 
 interface Post {
@@ -33,12 +32,12 @@ interface Post {
 }
 // Urutan array = urutan grid (kiri-atas = terbaru). Di doc dihitung dari bawah: Satu = paling lama.
 const POSTS: Post[] = [
-  { id: 6, type: 'photo', images: [`${IG}/post-6.jpg`], caption: 'To many more destinations, bray.', likes: 61, date: '6 AGUSTUS 2025' },
-  { id: 5, type: 'photo', images: [`${IG}/post-5.jpg`], caption: 'Takut (komdis)', likes: 47, date: '20 JULI 2025' },
-  { id: 4, type: 'photo', images: [`${IG}/post-4.jpg`], caption: 'Hari kelahiran pancasila', likes: 52, date: '1 JUNI 2025' },
-  { id: 3, type: 'photo', images: [`${IG}/post-3.jpg`], caption: 'Satu ditambah satu sama dengan gila', likes: 58, date: '17 APRIL 2025' },
-  { id: 2, type: 'photo', images: [`${IG}/post-2.jpg`], caption: 'Gober (godin bersama)', likes: 44, date: '15 MARET 2025' },
-  { id: 1, type: 'photo', images: [`${IG}/post-1.jpg`], caption: 'Selalu ingin kembali ke Yogyarkarta.', likes: 39, date: '24 DESEMBER 2024' },
+  { id: 6, type: 'photo', images: [`/IG/post-6.jpeg`], caption: 'To many more destinations, bray.', likes: 61, date: '6 AGUSTUS 2025' },
+  { id: 5, type: 'photo', images: [`/IG/post-5.jpeg`], caption: 'Takut (komdis)', likes: 47, date: '20 JULI 2025' },
+  { id: 4, type: 'photo', images: [`/IG/post-4.jpeg`], caption: 'Hari kelahiran pancasila', likes: 52, date: '1 JUNI 2025' },
+  { id: 3, type: 'photo', images: [`/IG/post-3.jpeg`], caption: 'Satu ditambah satu sama dengan gila', likes: 58, date: '17 APRIL 2025' },
+  { id: 2, type: 'photo', images: [`/IG/post-2.jpeg`], caption: 'Gober (godin bersama)', likes: 44, date: '15 MARET 2025' },
+  { id: 1, type: 'photo', images: [`/IG/post-1.jpeg`], caption: 'Selalu ingin kembali ke Yogyarkarta.', likes: 39, date: '24 DESEMBER 2024' },
 ];
 
 // Gambar dengan cadangan: kalau file belum ada, tampil kotak gelap + teks (bukan ikon rusak)

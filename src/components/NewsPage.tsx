@@ -3,7 +3,7 @@ import { useStory } from '../story/StoryProvider';
 import { playSadSong } from '../story/bgm';
 
 // Isi berita dari doc AU (poin 24). Nama situs sengaja generik; ganti SITE kalau mau.
-const SITE = 'berita.example';
+const SITE = 'jabar.tribunnews.com';
 const TAG = 'Berita Eksklusif';
 const HEADLINE = "Setahun Koma Usai Tragedi Cipularang, Korban Berinisial 'A' Akhirnya Tersadar";
 const DATE = '7 Agustus 2026';

@@ -12,8 +12,8 @@ const ME = {
   following: 120,
   followers: 95,
   // TODO: taruh file di public/twitter/ (foto profil & header dari folder Drive di doc)
-  avatar: '/twitter/avatar.jpg',
-  banner: '/twitter/header.jpg',
+  avatar: '/twitter/avatar.jpeg',
+  banner: '/twitter/header.jpeg',
 };
 
 interface Tweet {
@@ -28,11 +28,11 @@ interface Tweet {
 }
 
 const TWEETS: Tweet[] = [
-  { id: 1, at: '2025-08-07T03:30', text: 'Otw bandung bray', img: '/twitter/2025-08-07.jpg', replies: 3, reposts: 0, likes: 24, views: '312' },
+  { id: 1, at: '2025-08-07T03:30', text: 'Otw bandung bray', img: '/twitter/otw bandung bray.jpeg', replies: 3, reposts: 0, likes: 24, views: '312' },
   { id: 2, at: '2025-07-05T23:45', text: 'Kalau maket adalah orang, niscaya akan gue jodohin dia sama jaehyuk', replies: 2, reposts: 0, likes: 17, views: '241' },
-  { id: 3, at: '2025-03-03T10:05', text: 'Bajak hp bang asa', img: '/twitter/2025-03-03.jpg', replies: 1, reposts: 0, likes: 19, views: '198' },
+  { id: 3, at: '2025-03-03T10:05', text: 'Bajak hp bang asa', img: '/twitter/bajak hp bang asa.jpeg', replies: 1, reposts: 0, likes: 19, views: '198' },
   { id: 4, at: '2025-02-25T18:30', text: 'Hujan-hujan, masih nugas di kampus, dibawain bajigur sama bang ucuk', replies: 2, reposts: 0, likes: 31, views: '356' },
-  { id: 5, at: '2025-01-01T00:15', text: 'Bang Ji dan agendanya nemenin gue tiap tahun baru (bukan pacaran)', img: '/twitter/2025-01-01.jpg', replies: 3, reposts: 1, likes: 28, views: '402' },
+  { id: 5, at: '2025-01-01T00:15', text: 'Bang Ji dan agendanya nemenin gue tiap tahun baru (bukan pacaran)', img: '/twitter/Bang Ji tahun baru.jpeg', replies: 3, reposts: 1, likes: 28, views: '402' },
   // Di doc tertulis "25 Desember 2025" me-retweet "23 Agustus 2025", tapi urutan doc & cerita (koma sejak 7 Agustus 2025)
   // menunjukkan maksudnya tahun 2024. Kalau memang 2025, ubah tahun di sini dan di tweet id 7.
   { id: 6, at: '2024-12-25T16:15', text: 'Oh, sekarang punya :)', quoteId: 7, replies: 1, reposts: 0, likes: 15, views: '177' },
