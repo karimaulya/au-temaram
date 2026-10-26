@@ -155,12 +155,12 @@ export default function Gallery({ onBack }: GalleryProps) {
   }, [sections]);
 
   return (
-    <div className="relative flex h-full w-full flex-col overflow-hidden bg-white text-black select-none">
+    <div className="relative flex h-full w-full flex-col overflow-hidden bg-black text-white select-none">
       {selectedPhoto === null ? (
         // ============ LIBRARY ============
         <div className="relative flex h-full w-full flex-col">
           <div className={`absolute left-0 right-0 top-0 z-10 flex h-[88px] items-center justify-between px-4 pt-[46px] transition-colors duration-200 ${
-            isScrolled ? 'border-b border-gray-200/60 bg-white/90 backdrop-blur-xl' : 'bg-transparent'
+            isScrolled ? 'border-b border-zinc-800 bg-black/90 backdrop-blur-xl' : 'bg-transparent'
           }`}>
             {onBack ? (
               <button onClick={onBack} className="flex w-12 items-center text-[#007aff] active:opacity-50" title="Kembali">
@@ -168,7 +168,7 @@ export default function Gallery({ onBack }: GalleryProps) {
               </button>
             ) : <span className="w-12"></span>}
 
-            <div className={`text-[17px] font-semibold text-black transition-opacity duration-200 ${isScrolled ? 'opacity-100' : 'opacity-0'}`}>
+            <div className={`text-[17px] font-semibold text-white transition-opacity duration-200 ${isScrolled ? 'opacity-100' : 'opacity-0'}`}>
               Library
             </div>
 
@@ -184,18 +184,18 @@ export default function Gallery({ onBack }: GalleryProps) {
           </div>
 
           <div onScroll={handleScroll} className={`min-h-0 flex-1 overflow-y-auto pb-[96px] pt-[88px] ${NO_SB}`}>
-            <h1 className="px-4 text-[34px] font-bold leading-tight tracking-tight text-black">Library</h1>
+            <h1 className="px-4 text-[34px] font-bold leading-tight tracking-tight text-white">Library</h1>
             <div className="-mt-1 mb-3 px-4 text-[15px] text-[#8e8e93]">{allPhotos.length} Photos</div>
 
             {allPhotos.length === 0 && (
-              <p className="pt-16 text-center text-[15px] text-gray-400">Tidak ada foto</p>
+              <p className="pt-16 text-center text-[15px] text-zinc-500">Tidak ada foto</p>
             )}
 
             {activeTab === 'all' && (
               <div className="flex flex-col">
                 {sections.map(section => (
                   <div key={section.title} className="mb-2">
-                    <div className="px-4 pb-2 pt-3 text-[22px] font-bold tracking-tight text-black">{section.title}</div>
+                    <div className="px-4 pb-2 pt-3 text-[22px] font-bold tracking-tight text-white">{section.title}</div>
                     <div className="grid grid-cols-3 gap-[2px] px-0.5">
                       {section.photos.map(photo => (
                         <button
@@ -218,9 +218,9 @@ export default function Gallery({ onBack }: GalleryProps) {
             {activeTab === 'months' && (
               <div className="flex flex-col gap-4 px-4 py-2">
                 {sections.map(sec => (
-                  <div key={sec.title} onClick={() => openPhoto(sec.photos[0].id)} className="cursor-pointer overflow-hidden rounded-[20px] border border-gray-100 bg-gray-50 p-3 shadow-sm active:opacity-80">
+                  <div key={sec.title} onClick={() => openPhoto(sec.photos[0].id)} className="cursor-pointer overflow-hidden rounded-[20px] border border-zinc-800 bg-zinc-900 p-3 shadow-sm active:opacity-80">
                     <div className="mb-2 flex items-center justify-between">
-                      <span className="text-[18px] font-bold text-black">{sec.title}</span>
+                      <span className="text-[18px] font-bold text-white">{sec.title}</span>
                       <span className="text-[13px] text-[#007aff]">{sec.photos.length} Photos</span>
                     </div>
                     <div className="grid aspect-[4/3] grid-cols-2 gap-2 overflow-hidden rounded-[14px]">
@@ -248,13 +248,13 @@ export default function Gallery({ onBack }: GalleryProps) {
             )}
           </div>
 
-          <div className="absolute bottom-[36px] left-1/2 z-20 flex -translate-x-1/2 select-none items-center rounded-[22px] border border-black/5 bg-[#f0f0f0]/90 p-[3px] text-[13px] font-semibold text-gray-700 shadow-[0_4px_18px_rgba(0,0,0,0.12)] backdrop-blur-2xl">
+          <div className="absolute bottom-[36px] left-1/2 z-20 flex -translate-x-1/2 select-none items-center rounded-[22px] border border-white/5 bg-[#f0f0f0]/90 p-[3px] text-[13px] font-semibold text-zinc-300 shadow-[0_4px_18px_rgba(0,0,0,0.12)] backdrop-blur-2xl">
             {([['years', 'Years'], ['months', 'Months'], ['all', 'All Photos']] as const).map(([key, label]) => (
               <button
                 key={key}
                 onClick={() => changeTab(key)}
                 className={`rounded-[19px] px-4 py-1.5 transition-all ${
-                  activeTab === key ? 'bg-white text-black shadow-[0_1px_4px_rgba(0,0,0,0.12)]' : 'text-gray-600 active:opacity-60'
+                  activeTab === key ? 'bg-zinc-700 text-white' : 'text-zinc-400 active:opacity-60'
                 }`}
               >
                 {label}
@@ -264,12 +264,12 @@ export default function Gallery({ onBack }: GalleryProps) {
         </div>
       ) : (
         // ============ VIEWER ============
-        <div className="absolute inset-0 z-50 flex flex-col bg-white text-black">
+        <div className="absolute inset-0 z-50 flex flex-col bg-black text-white">
           {/* Slider paling bawah (z-0) supaya header/footer selalu bisa diklik */}
           <div
             ref={sliderRef}
             onScroll={handleSliderScroll}
-            className={`absolute inset-0 z-0 flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain bg-white touch-pan-x ${NO_SB}`}
+            className={`absolute inset-0 z-0 flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain bg-black touch-pan-x ${NO_SB}`}
           >
             {allPhotos.map(photo => (
               <div key={photo.id} className="flex h-full w-full flex-[0_0_100%] snap-center items-center justify-center">
@@ -278,7 +278,7 @@ export default function Gallery({ onBack }: GalleryProps) {
             ))}
           </div>
 
-          <div className="relative z-30 flex w-full items-center justify-between border-b border-gray-100/90 bg-white/95 px-3 pb-2 pt-[48px] shadow-sm backdrop-blur-xl">
+          <div className="relative z-30 flex w-full items-center justify-between border-b border-zinc-800 bg-black/95 px-3 pb-2 pt-[48px] shadow-sm backdrop-blur-xl">
             <button
               onClick={closeViewer}
               className="relative z-10 flex items-center py-1 pr-3 text-[#007aff] active:opacity-50"
@@ -291,8 +291,8 @@ export default function Gallery({ onBack }: GalleryProps) {
             </button>
 
             <div className="pointer-events-none absolute bottom-2 left-1/2 flex -translate-x-1/2 flex-col items-center">
-              <span className="text-[14px] font-semibold leading-snug tracking-tight text-black">{selectedPhoto.date}</span>
-              <span className="text-[11px] font-normal text-gray-400">{selectedPhoto.location}</span>
+              <span className="text-[14px] font-semibold leading-snug tracking-tight text-white">{selectedPhoto.date}</span>
+              <span className="text-[11px] font-normal text-zinc-500">{selectedPhoto.location}</span>
             </div>
 
             <button className="pr-1 text-[16px] font-medium text-[#007aff] active:opacity-50">Edit</button>
@@ -301,12 +301,12 @@ export default function Gallery({ onBack }: GalleryProps) {
           <div className="pointer-events-none relative z-30 flex-1" />
 
           {showInfo && (
-            <div className="absolute bottom-[78px] left-4 right-4 z-30 flex flex-col gap-1.5 rounded-[20px] border border-gray-200/90 bg-white p-4 shadow-2xl">
-              <div className="flex items-center justify-between border-b border-gray-100 pb-1.5">
-                <span className="text-[14px] font-bold text-gray-900">{selectedPhoto.title}</span>
-                <span className="text-[12px] text-gray-400">iPhone 15</span>
+            <div className="absolute bottom-[78px] left-4 right-4 z-30 flex flex-col gap-1.5 rounded-[20px] border border-zinc-800 bg-black p-4 shadow-2xl">
+              <div className="flex items-center justify-between border-b border-zinc-800 pb-1.5">
+                <span className="text-[14px] font-bold text-white">{selectedPhoto.title}</span>
+                <span className="text-[12px] text-zinc-500">iPhone 15</span>
               </div>
-              <div className="flex justify-between pt-0.5 text-[11px] text-gray-500">
+              <div className="flex justify-between pt-0.5 text-[11px] text-zinc-400">
                 <span>48 MP • 4032 × 3024</span>
                 <span>ISO 50 • 24mm • f/1.78</span>
               </div>
@@ -316,7 +316,7 @@ export default function Gallery({ onBack }: GalleryProps) {
             </div>
           )}
 
-          <div className="relative z-30 flex w-full items-center justify-between border-t border-gray-200/70 bg-white/95 px-7 pb-8 pt-3 text-[#007aff] backdrop-blur-xl">
+          <div className="relative z-30 flex w-full items-center justify-between border-t border-zinc-800 bg-black/95 px-7 pb-8 pt-3 text-[#007aff] backdrop-blur-xl">
             <button className="active:opacity-50" title="Bagikan">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>

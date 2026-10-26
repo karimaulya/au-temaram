@@ -19,16 +19,43 @@ export const STORY_DATA = DATA;
 const CHUNKS = new Map(DATA.chunks.map(c => [c.id, c]));
 const SAVE_KEY = 'au-temaram-save-v2';
 
-// catatan suara dari sheet -> nama file di /public/sfx/<nama>.mp3
-// Format: "a,b@3000" = putar a, lalu b setelah 3000 ms. Awalan "-" = hentikan suara yang sedang loop.
-const CUE_TO_SFX: Record<string, string> = {
-  'suara benda digeser': 'drag-heavy',
-  'tambahin suara nangis': 'cry', 'suara nangis': 'cry',
-  'tambahin suara ketawa': 'laugh-ajun',
-  'suara langkah mendekat': 'footsteps-far,footsteps-near@3000',
-  'ketukannya berhenti': '-knock-hard,knockout',
+// Catatan suara dari sheet (kolom F) -> nama suara. Pencocokan toleran (huruf besar/kecil, tanda kurung, kata kunci).
+// Format nama: "a,b@3000" = putar a, lalu b setelah 3000 ms. Awalan "-" = hentikan suara yang sedang loop.
+function cueSfx(cue?: string, chatId?: string): string | undefined {
+  const c = (cue ?? '').toLowerCase();
+  if (!c) return undefined;
+  if (/berhenti/.test(c)) return '-knock-hard,knockout';
+  if (/geser/.test(c)) return 'drag';
+  if (/nangis/.test(c)) return chatId === 'jeo' ? 'junghwan-cry' : 'crying';       // di chat Jeo yang menangis = Junghwan
+  if (/tawa/.test(c)) return 'laugh-ajun';
+  if (/langkah/.test(c)) return chatId === 'jeo' ? 'junghwan-steps,steps-near@4000' : 'steps-far,steps-near@3000';
+  return undefined;
+}
+// Suara untuk pesan tertentu yang tidak punya kolom cue di sheet (dicocokkan lewat isi pesan).
+const TEXT_CUES: { chat: string; re: RegExp; sfx: string }[] = [
+  { chat: 'group', re: /anjrti/i, sfx: 'chase-end' },                                   // grup 06.04: Asahi dikejar Jae
+  { chat: 'jeo', re: /ngedeket|makin deket|balik pintu/i, sfx: 'junghwan-steps' },      // Junghwan makin dekat
+];
+// Suara yang DIULANG acak selama satu adegan chat (biar terasa creepy / bertumpuk).
+// from = pesan pemicu, until = pesan penutup (opsional; kalau kosong berhenti saat chunk selesai).
+interface Layer { sounds: string[]; every: [number, number]; delay?: number; vol?: [number, number] }
+const AMBIENT: Record<string, { from: RegExp; until?: RegExp; layers: Layer[] }> = {
+  'jae-3': { from: /geser/i, until: /keluar sekarang juga/i, layers: [        // Bang Ji geser kursi, teriak, Bang Ajun ketawa
+    { sounds: ['drag', 'drag-2'], every: [6000, 11000], vol: [0.5, 1] },
+    { sounds: ['scream'], every: [16000, 26000], delay: 7000, vol: [0.5, 0.9] },
+    { sounds: ['laugh-ajun'], every: [18000, 30000], delay: 12000, vol: [0.4, 0.8] },
+  ] },
+  'jae-4': { from: /./, layers: [                                                 // Jae menyuruh keluar
+    { sounds: ['laugh-jae', 'laugh-2'], every: [9000, 16000], delay: 3000, vol: [0.5, 1] },
+  ] },
+  'jeo-1': { from: /lagi makan/i, until: /suaranya ilang/i, layers: [          // Junghwan mendekat
+    { sounds: ['junghwan-steps', 'steps-near'], every: [8000, 13000], vol: [0.6, 1] },
+    { sounds: ['junghwan-cry'], every: [14000, 22000], delay: 9000, vol: [0.5, 0.9] },
+  ] },
 };
-const MSG_SFX = 'message.m4a';   // suara kirim/terima pesan
+// Chunk yang pesan-pesan awalnya (sampai sebelum pesan Asahi pertama) dianggap sudah ada sebelum chat dibuka.
+const PRESEEN = new Set(['group-1']);
+const MSG_SFX = 'message';   // suara kirim/terima pesan (message.mp3 / message.m4a)
 
 // ---------------- STATE ----------------
 export interface Notif { id: string; chatId: string; chunkId?: string; sender: string; text: string }
@@ -114,10 +141,11 @@ function reducer(s: State, a: Action): State {
         case 'notify': {
           if (s.notifs.some(n => n.id === a.notifId)) return s;
           const done = s.notifiedChunks ?? [];
-          if (e.chunkId && done.includes(e.chunkId)) return s;          // sudah ada satu bubble untuk chunk ini
+          const key = `${e.chunkId ?? ''}|${e.text}`;
+          if (e.chunkId && done.includes(key)) return s;               // notif identik untuk chunk yang sama diabaikan
           const n: Notif = { id: a.notifId!, chatId: e.chatId, chunkId: e.chunkId, sender: e.sender, text: e.text };
           return { ...s, notifs: [...s.notifs, n],
-            notifiedChunks: e.chunkId ? [...done, e.chunkId] : done,
+            notifiedChunks: e.chunkId ? [...done, key] : done,
             notifSeen: e.chatId === 'calendar' ? (s.notifSeen ?? []) : [...(s.notifSeen ?? []), n] };
         }
         case 'fx': return { ...s, fx: { name: e.name, nonce: a.nonce } };
@@ -125,7 +153,7 @@ function reducer(s: State, a: Action): State {
         case 'unlockChunk': return s.unlockedChunks.includes(e.chunkId) ? s : { ...s, unlockedChunks: [...s.unlockedChunks, e.chunkId] };
         case 'alarm': return { ...s, alarm: e.label };
         case 'wipe': {
-          const fresh = DATA.chunks.filter(k => e.keepChats.includes(k.chatId) && !s.unlockedChunks.includes(k.id));
+          const fresh = DATA.chunks.filter(k => e.keepChats.includes(k.chatId) && !s.unlockedChunks.includes(k.id) && k.messages.every(m => m.dateLabel));
           return { ...s, wipedKeep: e.keepChats, page: 'home', openChat: null, notifs: [], notifSeen: [],
             unlockedChunks: [...fresh.map(k => k.id), ...s.unlockedChunks],   // di depan -> urutan inbox di bawah Mia
             doneChunks: [...s.doneChunks, ...fresh.map(k => k.id)],
@@ -150,20 +178,44 @@ function gateMet(g: Gate | undefined, s: State): boolean {
 
 // ---------------- AUDIO ----------------
 const loops = new Map<string, HTMLAudioElement>();
-const sfxUrl = (n: string) => `/sfx/${n}${/\.[a-z0-9]+$/i.test(n) ? '' : '.mp3'}`;   // nama berekstensi (mis. message.m4a) dipakai apa adanya
+// Nama file asli dari Drive. Dipakai sebagai cadangan kalau file belum di-rename.
+const SFX_ORIGINAL: Record<string, string> = {
+  notif: '1. Notifikasi iphone.mp3', message: '2. Iphone terima dan kirim pesan.m4a', ringtone: '3. Ringtone telepon dan video call.mp3',
+  'knock-soft': '5. Ketok pintu pelan.mp3', 'knock-hard': '6. Ketok pintu kenceng.mp3', 'door-open': '7. Pintu kebuka.mp3',
+  drag: '8. Bang Ji geser geser barang.mp3', 'laugh-ajun': '9. Ketawa creepy bang ajun.mp3', 'laugh-jae': '9. Ketawa creepy juga.mp3',
+  crying: '10. CREEPY CRYING.mp3', 'steps-far': '11. Langkah kaki creepy.mp3', 'steps-near': '12. Langkah kaki dekat.mp3',
+  knockout: '13. KNOCK OUT.mp3', alarm: '14. Alarm iphone.mp3', run: '15. lari.mp3', fall: '16. Jatuh.mp3', icu: '17. Monitor ICU.mp3',
+  'drag-2': '2. BANG JI GESER BARANG.mp3', scream: '3. Suara teriak pas bang ji.mp3', 'junghwan-steps': '4. Langkah kaki mendekat junghwan.mp3',
+  'junghwan-cry': '5. junghwan nangis habis langkah kaki.mp3', 'chase-end': '6. Suara Asahi dikejar jae di akhir.mp3',
+};
+function makeAudio(name: string, loop: boolean, volume = 1) {
+  const hasExt = /\.[a-z0-9]+$/i.test(name);
+  const key = name.replace(/\.[a-z0-9]+$/i, '');
+  const files = (hasExt ? [name] : [`${name}.mp3`, `${name}.m4a`]).concat(SFX_ORIGINAL[key] ? [SFX_ORIGINAL[key]] : []);
+  let i = 0;
+  const a = new Audio(); a.loop = loop; a.volume = Math.max(0, Math.min(1, volume));
+  const load = () => { a.src = encodeURI(`/sfx/${files[i]}`); };
+  a.onerror = () => {
+    if (++i < files.length) { load(); void a.play().catch(() => {}); }
+    else console.warn('[sfx] file tidak ditemukan di /public/sfx/:', files.join(' | '));
+  };
+  load();
+  return a;
+}
 export const stopSfx = (name: string) => { loops.get(name)?.pause(); loops.delete(name); };
-export const stopAllSfx = () => { loops.forEach(a => a.pause()); loops.clear(); };
+export const stopAllSfx = (keep: string[] = []) => { loops.forEach((a, n) => { if (!keep.includes(n)) { a.pause(); loops.delete(n); } }); };
 /** "nama" | "nama@jeda_ms" | "a,b@3000" (beberapa suara) | "-nama" (hentikan loop) */
-export function playSfx(spec: string, loop = false) {
+export function playSfx(spec: string, loop = false, volume = 1) {
   for (const part of spec.split(',')) {
     const [name, delay] = part.trim().split('@');
     const go = () => {
       if (name.startsWith('-')) { stopSfx(name.slice(1)); return; }
       try {
         if (loop && loops.has(name)) return;
-        const a = new Audio(sfxUrl(name)); a.loop = loop; void a.play().catch(() => {});
+        const a = makeAudio(name, loop, volume);
+        void a.play().catch(() => {});
         if (loop) loops.set(name, a);
-      } catch { /* file belum ada -> diam saja */ }
+      } catch { /* abaikan */ }
     };
     if (delay) window.setTimeout(go, +delay); else go();
   }
@@ -178,7 +230,7 @@ interface Ctx {
   openPage(page: 'news'): void;
   tap(id: string): void;
   dismissNotif(id: string): void;
-  reveal(chunkId: string, to: number, msg?: Msg, consumeNotifId?: string): void;
+  reveal(chunkId: string, to: number, msg?: Msg, consumeNotifId?: string, silent?: boolean): void;
   finishChunk(chunkId: string): void;
   reset(): void;
 }
@@ -219,7 +271,7 @@ export function StoryProvider({ children }: { children: ReactNode }) {
           nonce.current++;
           dispatch({ t: 'EFFECT', e, nonce: nonce.current, notifId: `${step.id}-${i}` });
           if (e.k === 'sfx') playSfx(e.name, e.loop);
-          if (e.k === 'wipe') stopAllSfx();
+          if (e.k === 'wipe') stopAllSfx(['icu']);   // monitor ICU tetap berbunyi sampai akhir
           if (e.k === 'vibrate') navigator.vibrate?.([200, 80, 200]);
         };
         // notif beruntun diberi jeda supaya terasa "masuk satu-satu"
@@ -254,10 +306,9 @@ export function StoryProvider({ children }: { children: ReactNode }) {
     openPage: page => dispatch({ t: 'OPEN_PAGE', page }),
     tap: id => dispatch({ t: 'TAP', id }),
     dismissNotif: id => dispatch({ t: 'DISMISS_NOTIF', id }),
-    reveal: (chunkId, to, msg, consumeNotifId) => {
+    reveal: (chunkId, to, msg, consumeNotifId, silent) => {
       dispatch({ t: 'REVEAL', chunkId, to, time: msg?.time, consume: consumeNotifId });
-      if (msg && !msg.dateLabel && !consumeNotifId) playSfx(MSG_SFX);       // pesan baru masuk / terkirim
-      const sfx = msg?.cue && CUE_TO_SFX[msg.cue]; if (sfx) playSfx(sfx);
+      if (msg && !msg.dateLabel && !consumeNotifId && !silent) playSfx(MSG_SFX);   // pesan baru masuk / terkirim
     },
     finishChunk: chunkId => dispatch({ t: 'CHUNK_DONE', chunkId }),
     reset: () => { localStorage.removeItem(SAVE_KEY); location.reload(); },
@@ -296,12 +347,44 @@ export function useChatPlayback(chatId: string) {
   const next = active?.messages[idx];
   const nextId = next?.id;
   const visible = chunks.flatMap(c => c.messages.slice(0, state.progress[c.id] ?? 0));
-  const isOld = !!next?.dateLabel;
+  // pesan yang dianggap sudah ada sebelum chat dibuka (sampai sebelum pesan Asahi pertama)
+  const firstSelf = active ? active.messages.findIndex(m => m.isSelf) : -1;
+  const pre = active && PRESEEN.has(active.id) && firstSelf > 0 ? firstSelf : 0;
+  const isOld = !!next?.dateLabel || idx < pre;
+  const cued = useRef(new Set<string>());
+  const playCue = (m?: Msg) => {
+    if (!m || m.dateLabel || cued.current.has(m.id)) return;
+    cued.current.add(m.id);
+    const s = cueSfx(m.cue, chatId) ?? TEXT_CUES.find(c => c.chat === chatId && c.re.test(m.text))?.sfx;
+    if (s) playSfx(s);
+  };
+
+  // suara latar yang diulang acak selama adegan masih berlangsung
+  const amb = active ? AMBIENT[active.id] : undefined;
+  const ambFrom = amb && active ? active.messages.findIndex(m => amb.from.test(m.text)) : -1;
+  const ambUntil = amb?.until && active ? active.messages.findIndex(m => amb.until!.test(m.text)) : -1;
+  const ambOn = !!amb && ambFrom >= 0 && idx >= ambFrom && (ambUntil < 0 || idx < ambUntil);
+  useEffect(() => {
+    if (!ambOn || !amb) return;
+    let alive = true;
+    const timers: number[] = [];
+    const rnd = (a: number, b: number) => a + Math.random() * (b - a);
+    amb.layers.forEach(l => {
+      const fire = () => {
+        if (!alive) return;
+        playSfx(l.sounds[Math.floor(Math.random() * l.sounds.length)], false, rnd(l.vol?.[0] ?? 0.6, l.vol?.[1] ?? 1));
+        timers.push(window.setTimeout(fire, rnd(l.every[0], l.every[1])));
+      };
+      timers.push(window.setTimeout(fire, l.delay ?? rnd(1500, 4000)));
+    });
+    return () => { alive = false; timers.forEach(clearTimeout); };
+  }, [ambOn, active?.id]); // eslint-disable-line react-hooks/exhaustive-deps
   // notif yang sudah muncul untuk pesan ini? Cocokkan lewat teks; kalau teks notif beda dari sheet,
   // notif ber-chunkId yang sama dianggap milik pesan pertama chunk itu.
   const seenNotifs = state.notifSeen ?? [];
   const entry = active && next && !next.isSelf && !isOld
-    ? seenNotifs.find(n => n.chatId === chatId && sameMsg(n.text, next.text))
+    ? seenNotifs.find(n => n.chatId === chatId && norm(n.text) === norm(next.text))
+      ?? seenNotifs.find(n => n.chatId === chatId && sameMsg(n.text, next.text))
       ?? (active.messages.slice(0, idx).every(m => m.dateLabel) ? seenNotifs.find(n => n.chunkId === active.id) : undefined)
     : undefined;
   const entryId = entry?.id;
@@ -312,7 +395,8 @@ export function useChatPlayback(chatId: string) {
     setPhase('wait'); setTyped(0);
     if (!active) return;
     if (!next) { finishChunk(active.id); return; }
-    if (isOld) { reveal(active.id, idx + 1, next, entryId); return; }   // riwayat lama: langsung tampil
+    if (isOld) { reveal(active.id, idx + 1, next, entryId, true); return; }   // riwayat lama / sudah ada: langsung tampil, tanpa suara
+    playCue(next);                                                     // suara muncul tepat saat pesan ini mulai (sebelum diketik)
     if (next.isSelf) return;                                           // ditangani efek mengetik di bawah
     if (notified) {                                                    // notif sudah muncul -> tidak perlu diketik lagi
       const t = window.setTimeout(() => reveal(active.id, idx + 1, next, entryId), NOTIF_REVEAL_MS);

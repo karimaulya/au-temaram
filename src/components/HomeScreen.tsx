@@ -47,8 +47,8 @@ export default function HomeScreen({ onOpenApp, messageBadge = 0, pulseMessages 
 
             <AppIcon icon="Calendar" label="Calendar" onClick={() => onOpenApp('calendar')} />
             <AppIcon icon="Maps" label="Maps" onClick={() => onOpenApp('maps')} />
-            <AppIcon icon="App Store" label="App Store" bg="bg-blue-400" />
-            <AppIcon icon="FaceTime" label="FaceTime" bg="bg-green-500" />
+            <AppIcon icon="X" label="X" onClick={() => onOpenApp('twitter')} />
+            <AppIcon icon="FaceTime" label="FaceTime" bg="bg-green-500" onClick={() => onOpenApp('facetime')} />
 
             <AppIcon icon="Notes" label="Notes" onClick={() => onOpenApp('notes')} />
             <AppIcon icon="Settings" label="Settings" onClick={() => onOpenApp('settings')} />
@@ -75,8 +75,8 @@ export default function HomeScreen({ onOpenApp, messageBadge = 0, pulseMessages 
           {/* Dock: padding 6px + -mx-1.5 supaya 4 ikon sejajar persis dengan kolom grid di atas */}
           <div className="-mx-1.5 rounded-[36px] border border-white/20 bg-white/25 px-1.5 py-[10px] backdrop-blur-2xl">
             <div className="grid grid-cols-[repeat(4,68px)] justify-between">
-              <AppIcon icon="Phone" label="Phone" bg="bg-transparent" onClick={() => onOpenApp('contact')} />
-              <AppIcon icon="Safari" label="Safari" bg="bg-transparent" onClick={() => onOpenApp('homescreen')} />
+              <AppIcon icon="Phone" label="Phone" bg="bg-transparent" onClick={() => onOpenApp('phone')} />
+              <AppIcon icon="Safari" label="Safari" bg="bg-transparent" onClick={() => onOpenApp('safari')} />
 
               <div className="relative h-[68px] w-[68px]">
                 <AppIcon icon="Messages" label="Messages" bg="bg-transparent" onClick={() => onOpenApp('imessage')} className={pulseMessages ? 'animate-pulse' : ''} />

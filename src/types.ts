@@ -18,6 +18,9 @@ export type AppScreen =
   | 'reminders'
   | 'files'
   | 'discord'
+  | 'twitter'
+  | 'facetime'
+  | 'phone'
 
 export interface AppIconProps {
   name: string;

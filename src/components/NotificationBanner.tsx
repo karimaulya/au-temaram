@@ -38,15 +38,15 @@ export default function NotificationBanner({ enabled, inChatId, onOpen }: Props)
     <div className="absolute left-3 right-3 top-[52px] z-[88] animate-banner">
       <div
         onClick={() => { setShown(null); onOpen(shown); }}
-        className="flex items-center gap-3 rounded-[22px] bg-white/85 p-3 shadow-xl backdrop-blur-xl cursor-pointer active:scale-[0.98] transition-transform text-black"
+        className="flex items-center gap-3 rounded-[22px] bg-zinc-900/85 p-3 shadow-xl backdrop-blur-xl cursor-pointer active:scale-[0.98] transition-transform text-white"
       >
         <img src={isCal ? '/icons/Calendar.svg' : '/icons/Messages.svg'} alt="" className="h-9 w-9 rounded-[9px] object-cover shrink-0" />
         <div className="min-w-0 flex-1">
           <div className="flex justify-between text-[12px] font-semibold">
             <span>{isCal ? 'Calendar' : shown.sender}</span>
-            <span className="font-normal text-black/50">now</span>
+            <span className="font-normal text-white/50">now</span>
           </div>
-          <p className="truncate text-[13px] text-black/80">{shown.text}</p>
+          <p className="truncate text-[13px] text-white/80">{shown.text}</p>
         </div>
       </div>
     </div>

@@ -26,7 +26,7 @@ def read(sheet, prefix, keep_date=False):
     return msgs
 
 data = {
-  'chats': [{'id': 'mia', 'title': 'Mia', 'isGroup': False},
+  'chats': [{'id': 'mia', 'title': 'Mia (sepupu)', 'isGroup': False},
             {'id': 'prev', 'title': 'Ujang Kedu💙', 'isGroup': True}],
   'chunks': [{'id': 'mia-1', 'chatId': 'mia', 'messages': read('Mia', 'mia')},
              {'id': 'prev-1', 'chatId': 'prev', 'messages': read('GRUP Ujang Kedu (2025)', 'prev', True)}],

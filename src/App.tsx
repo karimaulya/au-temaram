@@ -9,7 +9,22 @@ import CallScreen from './components/CallScreen';
 import NotificationBanner from './components/NotificationBanner';
 import AlarmOverlay from './components/AlarmOverlay';
 import NewsPage from './components/NewsPage';
+import Twitter from './components/Twitter';
+import Calendar from './components/Calendar';
+import Maps from './components/Maps';
+import Notes from './components/Notes';
+import Settings from './components/Settings';
+import Contacts from './components/Contacts';
+import Email from './components/Email';
+import Camera from './components/Camera';
+import Reminders from './components/Reminders';
+import Safari from './components/Safari';
+import Music from './components/Music';
+import FaceTime from './components/FaceTime';
+import Phone from './components/Phone';
+import { STEPS } from './story/script';
 import { useStory } from './story/StoryProvider';
+import { playSadSong } from './story/bgm';
 import type { Notif } from './story/StoryProvider';
 
 // Retakan layar (step 21). Ganti dengan gambar PNG transparan kalau mau lebih realistis.
@@ -33,11 +48,24 @@ function Crack() {
 }
 
 export default function App() {
-  const { state, openChat, unlockPhone, dismissNotif } = useStory();
+  const { state, openChat, unlockPhone, dismissNotif, reset } = useStory();
   // kalau progres tersimpan dan HP sudah pernah di-unlock, langsung ke home
   const [activeScreen, setActiveScreen] = useState<AppScreen>(state.phoneUnlocked ? 'homescreen' : 'lockscreen');
   const [rumble, setRumble] = useState(false);
   const [cracked, setCracked] = useState(false);
+
+  // cerita selesai (semua step sudah dilewati) -> tawarkan reset progres
+  const finished = state.step >= STEPS.length;
+  const [showEnd, setShowEnd] = useState(false);
+  useEffect(() => {
+    if (!finished) { setShowEnd(false); return; }
+    const t = setTimeout(() => setShowEnd(true), 1500);
+    return () => clearTimeout(t);
+  }, [finished]);
+
+  // lagu sedih penutup: kalau progres tersimpan sudah lewat halaman berita (mis. setelah reload), lanjutkan
+  // lagunya (mulai di sentuhan pertama, karena browser memblokir autoplay)
+  useEffect(() => { if (state.taps.includes('news-back')) playSadSong(0.8); }, [state.taps]);
 
   // efek layar dari skrip cerita
   useEffect(() => {
@@ -56,7 +84,7 @@ export default function App() {
     }
   }, [state.fx]);
 
-  const isLightScreen = activeScreen === 'imessage' || activeScreen === 'gallery' || activeScreen === 'instagram' || state.page === 'news';
+  const isLightScreen = false;   // semua layar dark mode -> status bar & home indicator putih
   const isInApp = activeScreen !== 'lockscreen' && activeScreen !== 'homescreen';
 
   const handleUnlock = (chatId?: string) => {
@@ -113,7 +141,7 @@ export default function App() {
         </div>
 
         {/* Area Render Layar */}
-        <div className={`relative h-full w-full bg-white overflow-hidden ${rumble ? 'animate-rumble' : ''}`}>
+        <div className={`relative h-full w-full bg-black overflow-hidden ${rumble ? 'animate-rumble' : ''}`}>
           {activeScreen === 'lockscreen' && <LockScreen onUnlock={handleUnlock} />}
           {activeScreen === 'homescreen' && (
             <HomeScreen onOpenApp={setActiveScreen} messageBadge={unreadChats} pulseMessages={unreadChats > 0 || hasPendingChunk} />
@@ -121,6 +149,19 @@ export default function App() {
           {activeScreen === 'imessage' && <IMessage />}
           {activeScreen === 'gallery' && <Gallery />}
           {activeScreen === 'instagram' && <Instagram />}
+          {activeScreen === 'twitter' && <Twitter />}
+          {activeScreen === 'calendar' && <Calendar />}
+          {activeScreen === 'maps' && <Maps />}
+          {activeScreen === 'notes' && <Notes onBack={() => setActiveScreen('homescreen')} />}
+          {activeScreen === 'settings' && <Settings />}
+          {activeScreen === 'contact' && <Contacts onOpenApp={setActiveScreen} />}
+          {activeScreen === 'email' && <Email />}
+          {activeScreen === 'camera' && <Camera />}
+          {activeScreen === 'reminders' && <Reminders />}
+          {activeScreen === 'safari' && <Safari />}
+          {activeScreen === 'spotify' && <Music />}
+          {activeScreen === 'facetime' && <FaceTime />}
+          {activeScreen === 'phone' && <Phone onOpenApp={setActiveScreen} />}
 
           {state.page === 'news' && <NewsPage />}
           <NotificationBanner
@@ -133,6 +174,17 @@ export default function App() {
         </div>
 
         {cracked && <Crack />}
+
+        {showEnd && (
+          <div className="absolute inset-0 z-[97] flex items-center justify-center bg-black/70 px-8 backdrop-blur-sm">
+            <div className="w-full rounded-[28px] border border-white/10 bg-zinc-900/95 p-6 text-center">
+              <div className="text-[20px] font-semibold text-white">Cerita selesai</div>
+              <p className="mt-1 text-[14px] text-zinc-400">Mau mengulang dari awal? Progres cerita akan dihapus.</p>
+              <button onClick={reset} className="mt-5 w-full rounded-full bg-[#007aff] py-3 text-[16px] font-semibold text-white active:opacity-70">Mulai ulang cerita</button>
+              <button onClick={() => setShowEnd(false)} className="mt-2 w-full py-2 text-[15px] text-zinc-400 active:opacity-60">Tutup</button>
+            </div>
+          </div>
+        )}
 
         {/* Home Indicator iOS */}
         {isInApp && (

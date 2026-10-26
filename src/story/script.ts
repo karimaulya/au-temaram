@@ -39,7 +39,7 @@ export const STEPS: Step[] = [
     ], gate: { on: 'chunkDone', chunkId: 'jae-2' } },
 
   { id: 's10-11', note: '10 pintu dibuka & benda digeser, 11 notif jae', delay: 1500, do: [
-      { k: 'sfx', name: '-knock-hard' }, { k: 'sfx', name: 'door-open' }, { k: 'sfx', name: 'drag-heavy@1500' },
+      { k: 'sfx', name: '-knock-hard' }, { k: 'sfx', name: 'door-open' }, { k: 'sfx', name: 'drag@1500' },
       { k: 'unlockChunk', chunkId: 'jae-3' },
       { k: 'notify', chatId: 'jae', sender: 'Jae berisik', text: 'Buruan, lo siap-siapnya kek putri solo', chunkId: 'jae-3' },
     ], gate: { on: 'chunkDone', chunkId: 'jae-3' } },
@@ -51,7 +51,7 @@ export const STEPS: Step[] = [
 
   // Teks video call tidak ada di xlsx; diambil dari doc AU (step 13).
   { id: 's13', note: '13 video call ucuk, gelap + jalanan lari', delay: 1500, do: [
-      { k: 'call', who: 'Bang Ucuk', mode: 'video', script: [
+      { k: 'call', who: 'Bang Ucuk', mode: 'video', video: '/video/run.mp4', script: [   // taruh videonya di public/video/run.mp4
         { sender: 'Asahi', text: 'Bang … ini Jae kenapa malah jadi ngejar gue?' },
         { sender: 'Asahi', text: 'Bang, mukanya Jae …. Mukanya Jae ancur.' },
         { sender: 'Asahi', text: 'Bang, gue takut! Sumpah! Takut banget! Gue harus gimana?' },
@@ -67,15 +67,16 @@ export const STEPS: Step[] = [
     ], gate: { on: 'chunkDone', chunkId: 'group-3' } },
 
   { id: 's16', note: '16 jae telepon, tawa serem', delay: 2000, do: [
-      { k: 'call', who: 'Jae berisik', mode: 'audio', answerSfx: 'creepy-laugh', autoEndMs: 8000 },
+      { k: 'call', who: 'Jae berisik', mode: 'audio', answerSfx: 'laugh-jae', autoEndMs: 8000 },
     ], gate: { on: 'callEnd' } },
 
   { id: 's17-18', note: '17 gedoran + notif beruntun, 18 chat jae', delay: 1000, do: [
       { k: 'fx', name: 'knock' },
       { k: 'sfx', name: 'knock-hard', loop: true },   // berhenti lewat cue "(ketukannya berhenti)" di sheet
       { k: 'unlockChunk', chunkId: 'jae-4' },
-      // hanya SATU notif (pesan pertama). Sisanya muncul kalau Asahi tetap di room chat.
-      { k: 'notify', chatId: 'jae', sender: 'Jae berisik', text: 'KELUAR', chunkId: 'jae-4' },
+      // 5 notif beruntun (engine memberi jeda 600 ms). Saat chat dibuka, 5 pesan ini langsung tampil tanpa diketik.
+      ...['KELUAR', 'KELUAR ASA', 'KELUAR ATAU MATI', 'KELUAR SEKARANG', 'KELUAR ATAU GUE DORONG PINTUNYA']
+        .map(text => ({ k: 'notify' as const, chatId: 'jae', sender: 'Jae berisik', text, chunkId: 'jae-4' })),
     ], gate: { on: 'chunkDone', chunkId: 'jae-4' } },
 
   { id: 's19', note: '19 gedoran berhenti, notif jeo', delay: 1500, do: [
@@ -96,17 +97,15 @@ export const STEPS: Step[] = [
       { k: 'alarm', label: 'Sarapan di Roti Gempol' },
     ], gate: { on: 'tap', id: 'alarm-dismiss' } },
 
-  { id: 's22-23', note: '22 notif Mia, 23 chat Mia', delay: 2000, do: [
-      { k: 'sfx', name: 'icu-monitor', loop: true },
+  // Mia mengirim chat -> saat itu juga semua chat lama diganti (hanya sisa grup 2025 + Mia). Monitor ICU terus berbunyi.
+  { id: 's22-23', note: '22 notif Mia + chat lama diganti, 23 chat Mia', delay: 2000, do: [
+      { k: 'wipe', keepChats: ['prev', 'mia'] },
+      { k: 'sfx', name: 'icu', loop: true },
       { k: 'unlockChunk', chunkId: 'mia-1' },
-      { k: 'notify', chatId: 'mia', sender: 'Mia', text: 'Kamu udah bangun, Sa? Berita ini beneran?', chunkId: 'mia-1' },
+      { k: 'notify', chatId: 'mia', sender: 'Mia (sepupu)', text: 'Kamu udah bangun, Sa? Berita ini beneran?', chunkId: 'mia-1' },
     ], gate: { on: 'chunkDone', chunkId: 'mia-1' } },
 
-  // user menekan link di chat Mia -> openPage('news') -> NewsPage; tombol kembali memanggil tap('news-back')
+  // user menekan link di chat Mia -> openPage('news') -> NewsPage (lagu sedih); tombol kembali memanggil tap('news-back')
   { id: 's24', note: '24 link -> halaman berita', do: [],
     gate: { on: 'tap', id: 'news-back' } },
-
-  { id: 's25', note: '25 semua chat hilang, sisa konten pra-kecelakaan', do: [
-      { k: 'wipe', keepChats: ['prev', 'mia'] },
-    ] },
 ];
