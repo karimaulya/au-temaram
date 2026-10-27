@@ -14,6 +14,7 @@ const PhoneIcon = ({ rotate = 0 }: { rotate?: number }) => (
 export default function CallScreen() {
   const { state, endCall } = useStory();
   const call = state.call;
+  const [previousCall, setPreviousCall] = useState(call);
   const [phase, setPhase] = useState<'ringing' | 'active'>('ringing');
   const [declined, setDeclined] = useState(false);
   const [secs, setSecs] = useState(0);
@@ -21,10 +22,16 @@ export default function CallScreen() {
   const [dead, setDead] = useState(false);               // video call "mati" (layar hitam)
   const [videoFailed, setVideoFailed] = useState(false);
 
-  // panggilan baru -> reset
-  useEffect(() => {
-    setPhase('ringing'); setDeclined(false); setSecs(0); setLineCount(0); setDead(false); setVideoFailed(false);
-  }, [call]);
+  // Reset call-local state before rendering a newly started call.
+  if (previousCall !== call) {
+    setPreviousCall(call);
+    setPhase('ringing');
+    setDeclined(false);
+    setSecs(0);
+    setLineCount(0);
+    setDead(false);
+    setVideoFailed(false);
+  }
 
   // dering
   useEffect(() => {
