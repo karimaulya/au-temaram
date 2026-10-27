@@ -22,36 +22,27 @@ import Safari from './components/Safari';
 import Music from './components/Music';
 import FaceTime from './components/FaceTime';
 import Phone from './components/Phone';
+import ResumePrompt from './components/ResumePrompt';
 import { useStory } from './story/StoryProvider';
 import { playSadSong, onSadSongEnd, continueSadSong } from './story/bgm';
 import type { Notif } from './story/StoryProvider';
 
-// Retakan layar (step 21). Ganti dengan gambar PNG transparan kalau mau lebih realistis.
+// Retakan layar (step 21): gambar PNG transparan di public/crack.png.
+// Kalau PNG-nya berlatar hitam (bukan transparan), tambahkan mix-blend-screen di className.
 function Crack() {
   return (
-    <svg className="pointer-events-none absolute inset-0 z-[95]" viewBox="0 0 393 852" preserveAspectRatio="none">
-      <g stroke="white" strokeOpacity="0.75" fill="none" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M260 310 L190 250 L150 170 L120 90 L100 0" />
-        <path d="M260 310 L330 260 L360 190 L393 120" />
-        <path d="M260 310 L300 380 L350 430 L393 520" />
-        <path d="M260 310 L210 390 L160 450 L110 560 L60 680 L40 852" />
-        <path d="M260 310 L250 420 L270 540 L240 660 L260 852" />
-        <path d="M190 250 L130 260 L60 230 L0 250" />
-        <path d="M210 390 L140 380 L70 410 L0 400" />
-        <path d="M300 380 L320 470 L300 560" />
-        <circle cx="260" cy="310" r="14" />
-        <circle cx="260" cy="310" r="32" strokeOpacity="0.4" />
-      </g>
-    </svg>
+    <img src="/crack.png" alt="" draggable={false}
+      className="pointer-events-none absolute inset-0 z-[95] h-full w-full select-none object-cover opacity-70" />
   );
 }
 
 export default function App() {
   const { state, openChat, unlockPhone, dismissNotif, reset } = useStory();
-  // kalau progres tersimpan dan HP sudah pernah di-unlock, langsung ke home
-  const [activeScreen, setActiveScreen] = useState<AppScreen>(state.phoneUnlocked ? 'homescreen' : 'lockscreen');
+  // selalu mulai dari lockscreen (setelah refresh HP terkunci lagi), progres cerita tetap dilanjutkan dari simpanan
+  const [activeScreen, setActiveScreen] = useState<AppScreen>('lockscreen');
   const [rumble, setRumble] = useState(false);
-  const [cracked, setCracked] = useState(false);
+  const cracked = state.cracked;   // tersimpan di progres, jadi tetap retak setelah refresh
+  useEffect(() => { new Image().src = '/crack.png'; }, []);   // preload supaya tidak berkedip
 
   // dialog akhir muncul HANYA setelah lagu penutup selesai diputar (lagu tidak loop sampai pembaca memilih lanjut)
   const [showEnd, setShowEnd] = useState(false);
@@ -67,7 +58,6 @@ export default function App() {
     if (state.fx.name === 'knock' || state.fx.name === 'shake' || state.fx.name === 'crack') {
       let rumbleTimeout: ReturnType<typeof setTimeout> | undefined;
       const startTimeout = setTimeout(() => {
-        if (state.fx?.name === 'crack') setCracked(true);
         setRumble(true);
         rumbleTimeout = setTimeout(() => setRumble(false), 700);
       }, 0);
@@ -93,8 +83,8 @@ export default function App() {
     setActiveScreen('imessage');
   };
 
-  const unreadChats = state.notifs.filter(n => n.chatId !== 'calendar').length;
-  const hasPendingChunk = state.unlockedChunks.some(id => !state.doneChunks.includes(id));
+  const unreadChats = state.notifs.filter((n: Notif) => n.chatId !== 'calendar').length;
+  const hasPendingChunk = state.unlockedChunks.some((id: string) => !state.doneChunks.includes(id));
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-[#1a1a1f] overflow-hidden select-none">
@@ -168,6 +158,8 @@ export default function App() {
         </div>
 
         {cracked && <Crack />}
+
+        <ResumePrompt />
 
         {showEnd && (
           <div className="absolute inset-0 z-[97] flex items-center justify-center bg-black/70 px-8 backdrop-blur-sm">

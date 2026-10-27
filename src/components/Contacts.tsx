@@ -46,7 +46,7 @@ export default function Contacts({ onOpenApp, embedded = false }: { onOpenApp: (
         <Avatar name={c.name} photo={c.photo} size={104} />
         <h2 className="mt-3 text-[28px] font-semibold">{c.name}</h2>
         <button disabled={!canMsg(c.chatId)} onClick={() => { openChat(c.chatId!); onOpenApp('imessage'); }}
-          className="mt-4 rounded-full bg-zinc-900 px-9 py-2.5 text-[15px] text-[#0a84ff] active:opacity-60 disabled:text-zinc-600">💬 message</button>
+          className="mt-4 rounded-full bg-zinc-900 px-9 py-2.5 text-[15px] text-[#0a84ff] active:opacity-60 disabled:text-zinc-600">message</button>
         <div className="mt-5 w-[calc(100%-32px)] rounded-[24px] bg-zinc-900 px-5 py-3">
           <div className="text-[13px] text-zinc-400">mobile</div><div className="text-[18px] text-[#0a84ff]">{c.phone}</div>
         </div>

@@ -69,7 +69,7 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
     setPasscode(nextCode);
 
     if (nextCode.length === 6) {
-      if (nextCode === '072001') {
+      if (nextCode === '082001') {
         setTimeout(() => {
           onUnlock(pendingChat.current);
         }, 120);

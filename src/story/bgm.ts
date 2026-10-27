@@ -12,6 +12,14 @@
 
 const SOURCES = ['/sfx/sad-song.mp3', '/sfx/sad-song.m4a', '/sfx/sad-song.ogg'];
 const CONTINUE_KEY = 'au-temaram-continue-reading';
+const SAVE_KEY = 'au-temaram-save-v2';   // sama dengan SAVE_KEY di StoryProvider
+
+// Halaman dimuat ulang SETELAH selesai membaca berita: lagu ditahan sampai pembaca memilih di pop up
+// (ResumePrompt). Sentuhan di pop up itu juga yang membuat browser mengizinkan suara diputar.
+let held = (() => {
+  try { return !!JSON.parse(localStorage.getItem(SAVE_KEY) ?? 'null')?.taps?.includes('news-back'); } catch { return false; }
+})();
+export function releaseSadSong(): void { held = false; }
 
 let audio: HTMLAudioElement | null = null;
 let nextSrc = 0;
@@ -49,7 +57,7 @@ function retryOnGesture() {
 }
 
 export function playSadSong(volume = 0.8): void {
-  if (typeof Audio === 'undefined' || finishedPlaying) return;
+  if (typeof Audio === 'undefined' || finishedPlaying || held) return;
   if (!audio) {
     const a = new Audio();
     a.loop = wantsLoop();                     // sudah pernah pilih "Lanjut baca" -> langsung loop
@@ -73,6 +81,7 @@ export function playSadSong(volume = 0.8): void {
 
 /** Pembaca memilih "Lanjut baca": lagu diputar ulang dari awal dan sekarang loop. */
 export function continueSadSong(): void {
+  held = false;
   try { localStorage.setItem(CONTINUE_KEY, '1'); } catch { /* abaikan */ }
   finishedPlaying = false;
   if (audio) {

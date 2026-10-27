@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { ReactNode } from 'react';
+import { useAfter, parseISO, fmtID, DAY_EN } from '../story/dates';
 import { Page, BackCircle, CircleBtn, BottomSearch, DotsGlyph, SearchGlyph, glass, NO_SB } from './AppShell';
 
 // Isi catatan dari doc AU (cerita berlangsung 7 Agustus 2025, jadi catatan terbaru = 6 Agustus 2025).
@@ -8,14 +9,14 @@ interface Note {
   id: number;
   group: string;      // judul seksi di daftar (gaya Apple Notes)
   title: string;
-  date: string;       // tanggal singkat di daftar
-  full: string;       // tanggal di dalam catatan
+  at: string;         // tanggal ISO; tampilan daftar & isi diatur story/dates.ts
+  edited?: boolean;   // tambah "(edited)" di tanggal dalam catatan
   body: string;
 }
 
 const NOTES: Note[] = [
   {
-    id: 1, group: 'Previous 7 Days', title: 'Itinerary Bandung (2D1N)', date: 'Wednesday', full: '6 Agustus 2025 (edited)',
+    id: 1, group: 'Previous 7 Days', title: 'Itinerary Bandung (2D1N)', at: '2025-08-06', edited: true,
     body: [
       '# Day 1',
       '☐ 03.30 - 06.00 (maybe?) Perjalanan Jakarta-Bandung',
@@ -37,7 +38,7 @@ const NOTES: Note[] = [
     ].join('\n'),
   },
   {
-    id: 2, group: 'Previous 7 Days', title: 'Sebuah tulisan yang gue tulis di malam hari', date: 'Monday', full: '4 Agustus 2025',
+    id: 2, group: 'Previous 7 Days', title: 'Sebuah tulisan yang gue tulis di malam hari', at: '2025-08-04',
     body: [
       'Tulisan ini gue buat pas ngerjain maket sambil stress berat soalnya besok responsi. Tapi gue inget kalau bentar lagi pergi liburan, jadi gue semangat (sambil nangis).',
       'Kalau esok hari bisa diskip, niscaya akan gue lakukan saat ini juga.',
@@ -45,7 +46,7 @@ const NOTES: Note[] = [
     ].join('\n'),
   },
   {
-    id: 3, group: 'Previous 7 Days', title: 'Ke supermarket, yang nitip:', date: 'Sunday', full: '3 Agustus 2025',
+    id: 3, group: 'Previous 7 Days', title: 'Ke supermarket, yang nitip:', at: '2025-08-03',
     body: [
       '• Bang Ucuk: sikat gigi kepala kecil',
       '• Bang Ji: singlet (katanya robek), sabun cuci muka Kahf, mie sambel ndower',
@@ -59,7 +60,7 @@ const NOTES: Note[] = [
     ].join('\n'),
   },
   {
-    id: 4, group: 'Previous 30 Days', title: 'Gue bener-bener mau nyelesain kuliah ini dengan … serius.', date: '30/07/25', full: '30 Juli 2025',
+    id: 4, group: 'Previous 30 Days', title: 'Gue bener-bener mau nyelesain kuliah ini dengan … serius.', at: '2025-07-30',
     body: [
       'Awalnya gue juga bingung sih kenapa dan untuk siapa gue pilih jurusan arsitektur, karena gue ngerasa enggak berbakat. Gue emang suka fotografi tapi kan beda (?). Gue pilih jurusan ini karena kemauan bibi dan Mia. Keluarga mereka yang ngurus gue, jadi gue enggak berniat bantah.',
       'Terus sekarang, gue jadi nemu the reasons why I must stay alive and remain sane until the end. Ya, karena akhirnya gue tahu apa yang gue mau. Seenggaknya, walaupun nanti gue enggak yang bergelimang harta, gue bisa bangun dan desain rumah gue sendiri, yang isinya mereka.',
@@ -69,13 +70,13 @@ const NOTES: Note[] = [
       '(tapi drunk nya karena MAKET)',
     ].join('\n'),
   },
-  { id: 5, group: 'May', title: 'When yah lulus', date: '28/05/25', full: '28 Mei 2025', body: '' },
+  { id: 5, group: 'May', title: 'When yah lulus', at: '2025-05-28', body: '' },
   {
-    id: 6, group: 'April', title: 'Pikiran liar di jam 2 pagi', date: '14/04/25', full: '14 April 2025',
+    id: 6, group: 'April', title: 'Pikiran liar di jam 2 pagi', at: '2025-04-14',
     body: 'Tiba-tiba pengen punya pacar',
   },
   {
-    id: 7, group: 'April', title: 'Draft chat', date: '10/04/25', full: '10 April 2025',
+    id: 7, group: 'April', title: 'Draft chat', at: '2025-04-10',
     body: [
       'Selamat pagi, Pak Arsa. Perkenalkan saya Asahi, mahasiswa semester 5 arsitektur kelas A.',
       'Berikut saya lampirkan foto gambar desain dan maket yang sudah saya buat.',
@@ -84,7 +85,7 @@ const NOTES: Note[] = [
     ].join('\n'),
   },
   {
-    id: 8, group: 'March', title: 'Gue enggak pernah berandai-andai tentang *rumah,* karena gue enggak pernah punya konseptualisasi soal rumah.', date: '05/03/25', full: '5 Maret 2025',
+    id: 8, group: 'March', title: 'Gue enggak pernah berandai-andai tentang *rumah,* karena gue enggak pernah punya konseptualisasi soal rumah.', at: '2025-03-05',
     body: [
       'Gue enggak pernah berekspektasi tinggi tentang di mana dan dengan siapa gue tinggal. Bagi gue, gue bisa melewati hari ini pun udah bisa gue syukuri.',
       '',
@@ -97,7 +98,15 @@ const NOTES: Note[] = [
   },
 ];
 
-const GROUPS = NOTES.reduce<string[]>((g, n) => (g.includes(n.group) ? g : [...g, n.group]), []);
+// tanggal di daftar: sebelum kecelakaan 7 hari terakhir = nama hari, lainnya dd/mm (tanpa tahun 2025); sesudah = dd/mm/yy
+const listDate = (n: Note, after: boolean) => {
+  const d = parseISO(n.at);
+  const dd = String(d.getDate()).padStart(2, '0'), mm = String(d.getMonth() + 1).padStart(2, '0'), yy = String(d.getFullYear()).slice(2);
+  if (after) return `${dd}/${mm}/${yy}`;
+  if (n.group === 'Previous 7 Days') return DAY_EN[d.getDay()];
+  return `${dd}/${mm}${d.getFullYear() !== 2025 ? '/' + yy : ''}`;
+};
+const fullDate = (n: Note, after: boolean) => `${fmtID(parseISO(n.at), after)}${n.edited ? ' (edited)' : ''}`;
 const plain = (s: string) => s.replace(/\*/g, '');
 // *miring*
 const fmt = (s: string): ReactNode[] =>
@@ -106,6 +115,10 @@ const fmt = (s: string): ReactNode[] =>
 const ShareGlyph = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 15V3M8 7l4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7" /></svg>;
 
 export default function Notes({ onBack }: { onBack?: () => void }) {
+  const after = useAfter();
+  // sesudah kecelakaan "hari ini" = Agustus 2026, jadi semua catatan 2025 dikelompokkan per tahun
+  const groupOf = (n: Note) => (after ? String(parseISO(n.at).getFullYear()) : n.group);
+  const GROUPS = NOTES.reduce<string[]>((g, n) => (g.includes(groupOf(n)) ? g : [...g, groupOf(n)]), []);
   const [open, setOpen] = useState<number | null>(null);
   const [done, setDone] = useState<Record<string, boolean>>({});
   const note = NOTES.find(n => n.id === open);
@@ -117,7 +130,7 @@ export default function Notes({ onBack }: { onBack?: () => void }) {
         <div className={`flex h-[44px] items-center gap-5 rounded-full px-5 ${glass}`}><ShareGlyph /><DotsGlyph /><SearchGlyph /></div>
       </div>
       <div className={`min-h-0 flex-1 overflow-y-auto px-5 pb-28 pt-4 ${NO_SB}`}>
-        <div className="text-center text-[13px] text-zinc-500">{note.full}</div>
+        <div className="text-center text-[13px] text-zinc-500">{fullDate(note, after)}</div>
         <h2 className="mt-3 text-[30px] font-bold leading-tight text-rose-300">{fmt(note.title)}</h2>
         <div className="mt-3 space-y-3">
           {note.body.split('\n').map((ln, i) => {
@@ -155,12 +168,12 @@ export default function Notes({ onBack }: { onBack?: () => void }) {
           <div key={g}>
             <div className="px-5 pb-2 pt-5 text-[20px] font-bold">{g}</div>
             <div className="mx-4 overflow-hidden rounded-[28px] bg-zinc-900">
-              {NOTES.filter(n => n.group === g).map((n, i) => {
+              {NOTES.filter(n => groupOf(n) === g).map((n, i) => {
                 const first = n.body.split('\n').find(l => l.trim()) ?? 'No additional text';
                 return (
                   <button key={n.id} onClick={() => setOpen(n.id)} className={`block w-full px-5 py-3 text-left active:bg-zinc-800 ${i ? 'border-t border-zinc-800' : ''}`}>
                     <div className="truncate text-[18px] font-semibold">{plain(n.title)}</div>
-                    <div className="truncate text-[15px] text-zinc-400">{n.date}  {plain(first).replace(/^(☐|•|#) /, '')}</div>
+                    <div className="truncate text-[15px] text-zinc-400">{listDate(n, after)}  {plain(first).replace(/^(☐|•|#) /, '')}</div>
                   </button>
                 );
               })}

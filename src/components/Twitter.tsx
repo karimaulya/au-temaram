@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useAfter, fmtEN } from '../story/dates';
 
 // ====== DATA (dari doc AU "Temaram (5)") ======
 // Semua tweet harus berakhir di 2025 (Asahi koma sejak 7 Agustus 2025).
@@ -39,13 +40,8 @@ const TWEETS: Tweet[] = [
   { id: 7, at: '2024-08-23T14:30', text: 'Enggak punya inspirasi buat desain rumah, karena temanya is family tapi i don’t even have a family', replies: 4, reposts: 2, likes: 46, views: '620' },
 ];
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-// gaya X: tahun berjalan (2025 di dalam cerita) tanpa tahun, tahun lain pakai tahun
-const fmtDate = (at: string) => {
-  const d = new Date(at);
-  const base = `${MONTHS[d.getMonth()]} ${d.getDate()}`;
-  return d.getFullYear() === 2025 ? base : `${base}, ${d.getFullYear()}`;
-};
+// aturan tahun: lihat story/dates.ts (sebelum kecelakaan 2025 tanpa tahun, sesudahnya selalu pakai tahun)
+const fmtDate = (at: string, after: boolean) => fmtEN(new Date(at), after);
 const fmt = (n: number) => (n >= 1000 ? (n / 1000).toFixed(1).replace('.0', '') + 'K' : String(n));
 const Ic = ({ d, s = 18 }: { d: string; s?: number }) => (
   <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={d} /></svg>
@@ -64,6 +60,7 @@ function Avatar({ className }: { className: string }) {
 }
 
 export default function Twitter() {
+  const after = useAfter();
   const [tab, setTab] = useState<'Posts' | 'Replies' | 'Media'>('Posts');
   const [liked, setLiked] = useState<number[]>([]);
   const list = TWEETS.filter(t => (tab === 'Posts' ? !t.reply : tab === 'Replies' ? t.reply : !!t.img))
@@ -115,7 +112,7 @@ export default function Twitter() {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-1 text-[15px]">
                     <b className="truncate">{ME.name}</b>
-                    <span className="truncate text-zinc-400">@{ME.handle} · {fmtDate(t.at)}</span>
+                    <span className="truncate text-zinc-400">@{ME.handle} · {fmtDate(t.at, after)}</span>
                   </div>
                   <p className="mt-0.5 whitespace-pre-wrap text-[15px] leading-snug">{t.text}</p>
                   {t.img && <Photo src={t.img} className="mt-2 aspect-[4/3] w-full rounded-2xl border border-zinc-800 object-cover" />}
@@ -125,7 +122,7 @@ export default function Twitter() {
                       <div className="flex items-center gap-1.5 text-[14px]">
                         <Avatar className="h-5 w-5 rounded-full text-[10px]" />
                         <b className="truncate">{ME.name}</b>
-                        <span className="truncate text-zinc-400">@{ME.handle} · {fmtDate(quoted.at)}</span>
+                        <span className="truncate text-zinc-400">@{ME.handle} · {fmtDate(quoted.at, after)}</span>
                       </div>
                       <p className="mt-1 text-[14px] leading-snug">{quoted.text}</p>
                     </div>

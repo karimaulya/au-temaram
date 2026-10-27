@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Page, BackCircle, NO_SB } from './AppShell';
+import { useAfter, fmtEN, parseISO } from '../story/dates';
 
 const MAILS = [
-  { id: 1, from: 'Temaram Guest House', subject: 'Konfirmasi pemesanan 7–9 Agustus', time: 'Aug 1', body: 'Halo Kak Asahi,\n\nPemesanan kamar untuk 10 orang pada 7–9 Agustus sudah kami konfirmasi. Check-in mulai pukul 14.00.\n\nSalam,\nTemaram Guest House' },
-  { id: 2, from: 'Tol Cipularang', subject: 'Info lalu lintas akhir pekan', time: 'Aug 4', body: 'Diperkirakan ramai lancar. Mohon periksa kondisi kendaraan sebelum berangkat.' },
-  { id: 3, from: 'Kampus', subject: 'Pengingat: batas pengumpulan tugas', time: 'Aug 5', body: 'Pengumpulan tugas akhir semester diperpanjang sampai 15 Agustus.' },
+  { id: 1, from: 'Temaram Guest House', subject: 'Konfirmasi pemesanan 7–9 Agustus', at: '2025-08-01', body: 'Halo Kak Asahi,\n\nPemesanan kamar untuk 10 orang pada 7–9 Agustus sudah kami konfirmasi. Check-in mulai pukul 14.00.\n\nSalam,\nTemaram Guest House' },
+  { id: 2, from: 'Tol Cipularang', subject: 'Info lalu lintas akhir pekan', at: '2025-08-04', body: 'Diperkirakan ramai lancar. Mohon periksa kondisi kendaraan sebelum berangkat.' },
+  { id: 3, from: 'Kampus', subject: 'Pengingat: batas pengumpulan tugas', at: '2025-08-05', body: 'Pengumpulan tugas akhir semester diperpanjang sampai 15 Agustus.' },
 ];
 const COLORS = ['bg-blue-600', 'bg-purple-600', 'bg-teal-600', 'bg-orange-600'];
 const color = (s: string) => COLORS[[...s].reduce((a, c) => a + c.charCodeAt(0), 0) % COLORS.length];
@@ -13,6 +14,8 @@ const Star = ({ on }: { on: boolean }) => (
 );
 
 export default function Email() {
+  const after = useAfter();
+  const when = (at: string) => fmtEN(parseISO(at), after);
   const [open, setOpen] = useState<number | null>(null);
   const [starred, setStarred] = useState<number[]>([]);
   const m = MAILS.find(x => x.id === open);
@@ -24,7 +27,7 @@ export default function Email() {
         <h2 className="text-[24px] font-bold leading-tight">{m.subject}</h2>
         <div className="mt-3 flex items-center gap-3">
           <span className={`flex h-10 w-10 items-center justify-center rounded-full text-[18px] font-medium ${color(m.from)}`}>{m.from[0]}</span>
-          <div><div className="text-[16px] font-semibold">{m.from}</div><div className="text-[13px] text-zinc-400">{m.time}</div></div>
+          <div><div className="text-[16px] font-semibold">{m.from}</div><div className="text-[13px] text-zinc-400">{when(m.at)}</div></div>
         </div>
         <p className="mt-5 whitespace-pre-wrap text-[16px] leading-relaxed">{m.body}</p>
       </div>
@@ -46,7 +49,7 @@ export default function Email() {
             <div className="min-w-0 flex-1">
               <div className="flex items-center justify-between gap-2">
                 <b className="truncate text-[17px]">{x.from}</b>
-                <span className="flex shrink-0 items-center gap-2 text-[13px] text-zinc-300">{x.time}<i className="h-2.5 w-2.5 rounded-full bg-[#4285f4]" /></span>
+                <span className="flex shrink-0 items-center gap-2 text-[13px] text-zinc-300">{when(x.at)}<i className="h-2.5 w-2.5 rounded-full bg-[#4285f4]" /></span>
               </div>
               <div className="truncate text-[15px] font-semibold">{x.subject}</div>
               <div className="truncate text-[14px] text-zinc-400">{x.body.replace(/\n/g, ' ')}</div>

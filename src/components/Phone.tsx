@@ -2,17 +2,19 @@ import { useState } from 'react';
 import type { AppScreen } from '../types';
 import { Page, CircleBtn, SearchGlyph, glass, NO_SB } from './AppShell';
 import Contacts from './Contacts';
+import { useAfter, recentLabel, parseISO } from '../story/dates';
 
 const KEYS: [string, string][] = [['1', ''], ['2', 'ABC'], ['3', 'DEF'], ['4', 'GHI'], ['5', 'JKL'], ['6', 'MNO'], ['7', 'PQRS'], ['8', 'TUV'], ['9', 'WXYZ'], ['*', ''], ['0', '+'], ['#', '']];
 const CALLS = [
-  { name: 'Bang Ucuk', kind: 'Video · Tidak terjawab', time: 'Yesterday', red: true },
-  { name: 'Temaram Guest House', kind: 'mobile', time: 'Wednesday', red: false },
-  { name: 'Jae berisik', kind: 'Audio', time: 'Wednesday', red: false },
+  { name: 'Bang Ucuk', kind: 'Video · Tidak terjawab', at: '2025-08-06', red: true },
+  { name: 'Temaram Guest House', kind: 'mobile', at: '2025-08-05', red: false },
+  { name: 'Jae berisik', kind: 'Audio', at: '2025-08-04', red: false },
 ];
 
 export default function Phone({ onOpenApp }: { onOpenApp: (s: AppScreen) => void }) {
   const [tab, setTab] = useState<'calls' | 'contacts' | 'keypad'>('keypad');
   const [num, setNum] = useState('');
+  const after = useAfter();
   const tabs = [
     { id: 'calls' as const, label: 'Calls', icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><circle cx="12" cy="12" r="9.5" /><path d="M12 7v5h-4" /></svg> },
     { id: 'contacts' as const, label: 'Contacts', icon: <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0z" /></svg> },
@@ -46,7 +48,7 @@ export default function Phone({ onOpenApp }: { onOpenApp: (s: AppScreen) => void
               {CALLS.map((r, i) => (
                 <div key={r.name + i} className={`flex items-center justify-between px-5 py-3.5 ${i ? 'border-t border-zinc-800' : ''}`}>
                   <div><div className={`text-[18px] font-semibold ${r.red ? 'text-red-500' : ''}`}>{r.name}</div><div className="text-[14px] text-zinc-400">{r.kind}</div></div>
-                  <span className="text-[14px] text-zinc-400">{r.time}</span>
+                  <span className="text-[14px] text-zinc-400">{recentLabel(parseISO(r.at), after)}</span>
                 </div>
               ))}
             </div>

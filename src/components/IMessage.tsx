@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useStory, useChatPlayback, STORY_DATA } from '../story/StoryProvider';
 import Keyboard from './Keyboard';
 import { separatorFor } from '../story/chatTime';
+import { useAfter, labelToShort } from '../story/dates';
 
 // Nama tampilan per chat (judul sheet bukan selalu nama yang diinginkan).
 const LABELS: Record<string, string> = {
@@ -41,6 +42,7 @@ function Avatar({ name, size = 28 }: { name: string; size?: number }) {
 
 function Inbox() {
   const { state, openChat } = useStory();
+  const after = useAfter();
   const allChats = [...STORY_DATA.chats, ...EXTRA_CHATS.filter(e => !STORY_DATA.chats.some(c => c.id === e.id))];
 
   const rows = allChats.map(meta => {
@@ -78,7 +80,7 @@ function Inbox() {
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between">
                   <span className="truncate text-[16px] font-semibold">{label}</span>
-                  <span className="text-[13px] text-zinc-500">{last?.time ?? ''}</span>
+                  <span className="text-[13px] text-zinc-500">{after && last?.dateLabel ? labelToShort(last.dateLabel) : last?.time ?? ''}</span>
                 </div>
                 <p className="truncate text-[14px] text-zinc-400">{preview}</p>
               </div>
@@ -94,13 +96,14 @@ function Inbox() {
 function ChatRoom({ chatId }: { chatId: string }) {
   const { openChat, openPage } = useStory();
   const p = useChatPlayback(chatId);
+  const after = useAfter();
   const scrollRef = useRef<HTMLDivElement>(null);
   const composerRef = useRef<HTMLDivElement>(null);
   const meta = [...STORY_DATA.chats, ...EXTRA_CHATS].find(c => c.id === chatId);
   const label = LABELS[chatId] ?? meta?.title ?? '';
   const isGroup = !!meta?.isGroup;
   const msgs = p.messages;
-  const seps = msgs.map((m, i) => separatorFor(m, msgs[i - 1]));   // timestamp di tengah room chat
+  const seps = msgs.map((m, i) => separatorFor(m, msgs[i - 1], after));   // timestamp di tengah room chat
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });

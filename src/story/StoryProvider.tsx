@@ -19,6 +19,12 @@ const DATA: ChatData = {
 export const STORY_DATA = DATA;
 const CHUNKS = new Map(DATA.chunks.map(c => [c.id, c]));
 const SAVE_KEY = 'au-temaram-save-v2';
+// Isi simpanan SAAT HALAMAN INI DIMUAT (bukan state yang berjalan). Dipakai untuk tahu "ini hasil refresh/tutup-buka browser".
+const SAVED: Partial<State> | null = (() => {
+  try { const v = localStorage.getItem(SAVE_KEY); return v ? JSON.parse(v) : null; } catch { return null; }
+})();
+/** true kalau halaman ini dimuat ulang SETELAH pembaca selesai membaca berita (-> tampilkan pop up lanjut / mulai ulang). */
+export const RESTORED_AFTER_READING = !!SAVED?.taps?.includes('news-back');
 
 // Catatan suara dari sheet (kolom F) -> nama suara. Pencocokan toleran (huruf besar/kecil, tanda kurung, kata kunci).
 // Format nama: "a,b@3000" = putar a, lalu b setelah 3000 ms. Awalan "-" = hentikan suara yang sedang loop.
@@ -54,8 +60,15 @@ const AMBIENT: Record<string, { from: RegExp; until?: RegExp; layers: Layer[] }>
     { sounds: ['junghwan-cry'], every: [14000, 22000], delay: 9000, vol: [0.5, 0.9] },
   ] },
 };
-// Chunk yang pesan-pesan awalnya (sampai sebelum pesan Asahi pertama) dianggap sudah ada sebelum chat dibuka.
-const PRESEEN = new Set(['group-1']);
+// Chunk yang pesan-pesan awalnya dianggap sudah ada di room sebelum chat dibuka: dari pesan pertama SAMPAI pesan yang cocok
+// dengan pola ini (= pesan yang tampil di notif lockscreen). Pesan setelahnya tetap muncul dengan animasi mengetik.
+const PRESEEN: Record<string, RegExp> = { 'group-1': /siapa yang punya nomornya/i };
+// Nama pengirim notif per chat (dipakai notif "lanjutkan chat" otomatis)
+const CHAT_LABELS: Record<string, string> = {
+  group: 'Ujang Kedu💙', jae: 'Jae berisik', owner: 'Temaram Guest House', ucuk: 'Bang Ucuk', jeo: 'Jeo', mia: 'Mia (sepupu)', prev: 'Ujang Kedu💙',
+};
+const ICU_LOW = 0.22;          // volume monitor ICU setelah berita selesai dibaca
+const RESUME_DELAY_MS = 1200;  // jeda sebelum notif "lanjutkan chat" muncul setelah room ditutup
 const MSG_SFX = 'message';   // suara kirim/terima pesan (message.mp3 / message.m4a)
 
 // ---------------- STATE ----------------
@@ -96,11 +109,12 @@ interface State {
   alarm: string | null;
   notifiedChunks: string[];     // chunk yang sudah pernah punya notif -> notif berikutnya untuk chunk itu diabaikan
   notifSeen: SeenNotif[];       // notif yang sudah pernah muncul -> bubble-nya langsung tampil di chat tanpa animasi ketik
+  cracked: boolean;             // layar sudah retak (tersimpan, jadi tetap retak setelah refresh)
 }
 const initial: State = {
   step: 0, ranStep: -1, unlockedChunks: [], progress: {}, doneChunks: [], openedChats: [], taps: [],
   phoneUnlocked: false, callEnds: 0, callEndsAtStepStart: 0, notifs: [], clock: '04:17',
-  openChat: null, call: null, fx: null, page: 'home', wipedKeep: null, alarm: null, notifSeen: [], notifiedChunks: [],
+  openChat: null, call: null, fx: null, page: 'home', wipedKeep: null, alarm: null, notifSeen: [], notifiedChunks: [], cracked: false,
 };
 
 type Action =
@@ -114,7 +128,29 @@ type Action =
   | { t: 'END_CALL' }
   | { t: 'TAP'; id: string }
   | { t: 'DISMISS_NOTIF'; id: string }
-  | { t: 'OPEN_PAGE'; page: 'news' };
+  | { t: 'OPEN_PAGE'; page: 'news' }
+  | { t: 'RESUME'; nonce: number };
+
+// Notif "lanjutkan chat": untuk chunk terdepan yang belum selesai. Maksimal satu notif per chat.
+function buildResume(s: State, nonce: number): { n: Notif; seen: boolean } | null {
+  if (!s.phoneUnlocked) return null;
+  const id = s.unlockedChunks.find(i => !s.doneChunks.includes(i));
+  const chunk = id ? CHUNKS.get(id) : undefined;
+  if (!chunk) return null;
+  const idx = s.progress[chunk.id] ?? 0;
+  if (idx >= chunk.messages.length) return null;
+  if (s.notifs.some(n => n.chatId === chunk.chatId)) return null;          // sudah ada notif untuk chat ini
+  const next = chunk.messages[idx];
+  if (!next || next.isSelf || next.dateLabel) return null;                  // giliran Asahi / riwayat lama
+  const preRe = PRESEEN[chunk.id];
+  if (preRe && idx <= chunk.messages.findIndex(m => preRe.test(m.text))) return null;   // sudah ada di room sejak awal
+  if ((s.notifSeen ?? []).some(n => n.chatId === chunk.chatId && sameMsg(n.text, next.text))) return null;   // sudah pernah dinotifkan
+  const isGroup = !!DATA.chats.find(c => c.id === chunk.chatId)?.isGroup;
+  const text = isGroup ? `${next.sender}: ${next.text}` : next.text;
+  const n: Notif = { id: `resume-${chunk.id}-${idx}-${nonce}`, chatId: chunk.chatId, chunkId: chunk.id,
+    sender: CHAT_LABELS[chunk.chatId] ?? chunk.chatId, text };
+  return { n, seen: true };   // bubble-nya langsung muncul saat room dibuka
+}
 
 function reducer(s: State, a: Action): State {
   switch (a.t) {
@@ -134,6 +170,11 @@ function reducer(s: State, a: Action): State {
     case 'TAP': return { ...s, taps: [...s.taps, a.id],
       page: a.id === 'news-back' ? 'home' : s.page, alarm: a.id === 'alarm-dismiss' ? null : s.alarm };
     case 'OPEN_PAGE': return { ...s, page: a.page };
+    case 'RESUME': {
+      const r = buildResume(s, a.nonce);
+      if (!r) return s;
+      return { ...s, notifs: [...s.notifs, r.n], notifSeen: r.seen ? [...(s.notifSeen ?? []), r.n] : s.notifSeen };
+    }
     case 'DISMISS_NOTIF': return { ...s, notifs: s.notifs.filter(n => n.id !== a.id) };
     case 'EFFECT': {
       const e = a.e;
@@ -149,11 +190,12 @@ function reducer(s: State, a: Action): State {
             notifiedChunks: e.chunkId ? [...done, key] : done,
             notifSeen: e.chatId === 'calendar' ? (s.notifSeen ?? []) : [...(s.notifSeen ?? []), n] };
         }
-        case 'fx': return { ...s, fx: { name: e.name, nonce: a.nonce } };
+        case 'fx': return { ...s, fx: { name: e.name, nonce: a.nonce }, cracked: s.cracked || e.name === 'crack' };
         case 'call': return { ...s, call: { who: e.who, mode: e.mode, script: e.script, answerSfx: e.answerSfx, autoEndMs: e.autoEndMs, video: e.video } };
         case 'unlockChunk': return s.unlockedChunks.includes(e.chunkId) ? s : { ...s, unlockedChunks: [...s.unlockedChunks, e.chunkId] };
         case 'alarm': return { ...s, alarm: e.label };
         case 'wipe': {
+          if (s.wipedKeep) return s;   // sudah pernah dijalankan (mis. efek step diulang setelah refresh)
           const fresh = DATA.chunks.filter(k => e.keepChats.includes(k.chatId) && !s.unlockedChunks.includes(k.id) && k.messages.every(m => m.dateLabel));
           return { ...s, wipedKeep: e.keepChats, page: 'home', openChat: null, notifs: [], notifSeen: [],
             unlockedChunks: [...fresh.map(k => k.id), ...s.unlockedChunks],   // di depan -> urutan inbox di bawah Mia
@@ -203,9 +245,30 @@ function makeAudio(name: string, loop: boolean, volume = 1) {
   load();
   return a;
 }
-export const stopSfx = (name: string) => { loops.get(name)?.pause(); loops.delete(name); };
-export const stopAllSfx = (keep: string[] = []) => { loops.forEach((a, n) => { if (!keep.includes(n)) { a.pause(); loops.delete(n); } }); };
+const stopSfx = (name: string) => { loops.get(name)?.pause(); loops.delete(name); };
+/** Ubah volume suara yang sedang loop pelan-pelan (mis. monitor ICU dikecilkan setelah berita dibaca). */
+function fadeSfx(name: string, to: number, ms = 2000) {
+  const a = loops.get(name);
+  if (!a) return;
+  const from = a.volume, steps = Math.max(1, Math.round(ms / 50));
+  let i = 0;
+  const t = window.setInterval(() => {
+    i++; a.volume = Math.max(0, Math.min(1, from + (to - from) * (i / steps)));
+    if (i >= steps) clearInterval(t);
+  }, 50);
+}
+// Browser memblokir suara otomatis setelah refresh sampai ada sentuhan -> loop dicoba lagi di sentuhan pertama.
+function playOnGesture(name: string, a: HTMLAudioElement) {
+  const go = () => {
+    window.removeEventListener('pointerdown', go); window.removeEventListener('keydown', go);
+    if (loops.get(name) === a) void a.play().catch(() => {});   // kalau sudah di-stop, jangan dinyalakan lagi
+  };
+  window.addEventListener('pointerdown', go, { once: true });
+  window.addEventListener('keydown', go, { once: true });
+}
+const stopAllSfx = (keep: string[] = []) => { loops.forEach((a, n) => { if (!keep.includes(n)) { a.pause(); loops.delete(n); } }); };
 /** "nama" | "nama@jeda_ms" | "a,b@3000" (beberapa suara) | "-nama" (hentikan loop) */
+// eslint-disable-next-line react-refresh/only-export-components
 export function playSfx(spec: string, loop = false, volume = 1) {
   for (const part of spec.split(',')) {
     const [name, delay] = part.trim().split('@');
@@ -214,8 +277,8 @@ export function playSfx(spec: string, loop = false, volume = 1) {
       try {
         if (loop && loops.has(name)) return;
         const a = makeAudio(name, loop, volume);
-        void a.play().catch(() => {});
         if (loop) loops.set(name, a);
+        void a.play().catch(() => { if (loop) playOnGesture(name, a); });
       } catch { /* abaikan */ }
     };
     if (delay) window.setTimeout(go, +delay); else go();
@@ -233,19 +296,41 @@ interface Ctx {
   dismissNotif(id: string): void;
   reveal(chunkId: string, to: number, msg?: Msg, consumeNotifId?: string, silent?: boolean): void;
   finishChunk(chunkId: string): void;
+  scheduleResume(): void;   // dipanggil saat room chat ditutup -> beberapa saat kemudian muncul notif 'lanjutkan chat'
+  cancelResume(): void;
   reset(): void;
 }
 const StoryCtx = createContext<Ctx | null>(null);
 
 export function StoryProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initial, init => {
-    try {
-      const v = localStorage.getItem(SAVE_KEY);
-      if (v) { const saved = JSON.parse(v); return { ...init, ...saved, notifSeen: saved.notifSeen ?? [], ranStep: -1, call: null, fx: null }; }
-    } catch { /* abaikan */ }
+    if (SAVED) {
+      // Refresh / tutup-buka browser = HP terkunci lagi (App selalu mulai dari lockscreen), tapi progres cerita dilanjutkan.
+      // Layar yang sedang terbuka (room chat, halaman berita) dan panggilan tidak ikut dipulihkan.
+      return { ...init, ...SAVED, notifSeen: SAVED.notifSeen ?? [], notifiedChunks: SAVED.notifiedChunks ?? [],
+        ranStep: -1, call: null, fx: null, openChat: null, page: 'home' } as State;
+    }
     return init;
   });
   const nonce = useRef(0);
+  const resumeTimer = useRef<number | undefined>(undefined);
+  const fireResume = useCallback(() => { nonce.current++; dispatch({ t: 'RESUME', nonce: nonce.current }); }, []);
+
+  // setelah refresh: kalau ada chat yang masih berlangsung, munculkan 1 notif di lockscreen supaya bisa langsung dilanjutkan
+  useEffect(() => {
+    if (!SAVED?.phoneUnlocked || RESTORED_AFTER_READING) return;
+    const t = window.setTimeout(fireResume, 800);
+    return () => clearTimeout(t);
+  }, [fireResume]);
+
+  // monitor ICU tetap berbunyi setelah refresh (kalau belum selesai membaca; kalau sudah, dinyalakan dari pop up "Lanjutkan")
+  useEffect(() => {
+    if (SAVED?.wipedKeep && !RESTORED_AFTER_READING) playSfx('icu', true, 1);
+  }, []);
+
+  // selesai membaca berita -> monitor ICU dikecilkan pelan-pelan (lagu sedih tetap seperti biasa)
+  const readDone = state.taps.includes('news-back');
+  useEffect(() => { if (readDone) fadeSfx('icu', ICU_LOW, 2500); }, [readDone]);
 
   // simpan progres (tanpa state sementara)
   useEffect(() => {
@@ -312,12 +397,15 @@ export function StoryProvider({ children }: { children: ReactNode }) {
       if (msg && !msg.dateLabel && !consumeNotifId && !silent) playSfx(MSG_SFX);   // pesan baru masuk / terkirim
     },
     finishChunk: chunkId => dispatch({ t: 'CHUNK_DONE', chunkId }),
+    scheduleResume: () => { clearTimeout(resumeTimer.current); resumeTimer.current = window.setTimeout(fireResume, RESUME_DELAY_MS); },
+    cancelResume: () => clearTimeout(resumeTimer.current),
     reset: () => { clearContinueFlag(); localStorage.removeItem(SAVE_KEY); location.reload(); },
-  }), [state]);
+  }), [state, fireResume]);
 
   return <StoryCtx.Provider value={value}>{children}</StoryCtx.Provider>;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useStory = () => { const c = useContext(StoryCtx); if (!c) throw new Error('Bungkus app dengan <StoryProvider>'); return c; };
 
 // ---------------- PLAYBACK UNTUK SATU CHAT ----------------
@@ -332,10 +420,14 @@ const SELF_START_MS = 1000;           // jeda sebelum Asahi mulai mengetik
 const keyDelay = (c: string, scale: number) =>
   (c === ' ' ? 120 : /[.,!?…]/.test(c) ? 220 : 70 + Math.random() * 80) * scale;
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useChatPlayback(chatId: string) {
-  const { state, reveal, finishChunk } = useStory();
+  const { state, reveal, finishChunk, scheduleResume, cancelResume } = useStory();
   const [phase, setPhase] = useState<'wait' | 'typing'>('wait');   // untuk pesan lawan bicara
   const [typed, setTyped] = useState(0);                           // jumlah huruf yang sudah diketik Asahi
+
+  // room ditutup (tombol kembali / home / pindah chat) -> sebentar lagi muncul 1 notif untuk chat yang masih berlangsung
+  useEffect(() => { cancelResume(); return () => scheduleResume(); }, [chatId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const chunks = DATA.chunks.filter(c => c.chatId === chatId && state.unlockedChunks.includes(c.id));
   const firstOpen: Chunk | undefined = chunks.find(c => !state.doneChunks.includes(c.id));
@@ -349,8 +441,9 @@ export function useChatPlayback(chatId: string) {
   const nextId = next?.id;
   const visible = chunks.flatMap(c => c.messages.slice(0, state.progress[c.id] ?? 0));
   // pesan yang dianggap sudah ada sebelum chat dibuka (sampai sebelum pesan Asahi pertama)
-  const firstSelf = active ? active.messages.findIndex(m => m.isSelf) : -1;
-  const pre = active && PRESEEN.has(active.id) && firstSelf > 0 ? firstSelf : 0;
+  const preRe = active ? PRESEEN[active.id] : undefined;
+  const preIdx = active && preRe ? active.messages.findIndex(m => preRe.test(m.text)) : -1;
+  const pre = preIdx >= 0 ? preIdx + 1 : 0;
   const isOld = !!next?.dateLabel || idx < pre;
   const cued = useRef(new Set<string>());
   const playCue = (m?: Msg) => {
@@ -393,7 +486,7 @@ export function useChatPlayback(chatId: string) {
 
   // pesan lawan bicara / riwayat lama / pesan yang sudah ada notifnya
   useEffect(() => {
-    setPhase('wait'); setTyped(0);
+    window.setTimeout(() => { setPhase('wait'); setTyped(0); }, 0);
     if (!active) return;
     if (!next) { finishChunk(active.id); return; }
     if (isOld) { reveal(active.id, idx + 1, next, entryId, true); return; }   // riwayat lama / sudah ada: langsung tampil, tanpa suara
@@ -404,7 +497,7 @@ export function useChatPlayback(chatId: string) {
       return () => clearTimeout(t);
     }
     const prev = active.messages[idx - 1];
-    const pause = !prev || prev.dateLabel ? FIRST_PAUSE_MS : PAUSE_MS;
+    const pause = !prev || prev.dateLabel || (pre > 0 && idx === pre) ? FIRST_PAUSE_MS : PAUSE_MS;
     const t1 = window.setTimeout(() => setPhase('typing'), pause);
     const t2 = window.setTimeout(() => reveal(active.id, idx + 1, next, entryId), pause + typingMs(next.text));
     return () => { clearTimeout(t1); clearTimeout(t2); };

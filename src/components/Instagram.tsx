@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import type { ImgHTMLAttributes } from 'react';
+import { useAfter, fmtID, parseISO } from '../story/dates';
 
 // ====== DATA (dari doc AU: Asahi @asahi__) ======
 // Foto: taruh di /public/photos/instagram/ (nama file di bawah). Kalau file belum ada, tampil kotak gelap bertuliskan keterangan.
@@ -27,17 +28,17 @@ interface Post {
   images: string[];          // carousel = lebih dari 1 gambar
   caption: string;
   likes: number;
-  date: string;
+  at: string;                // tanggal ISO; tampilannya diatur story/dates.ts
   label?: string;            // teks di atas thumbnail grid
 }
 // Urutan array = urutan grid (kiri-atas = terbaru). Di doc dihitung dari bawah: Satu = paling lama.
 const POSTS: Post[] = [
-  { id: 6, type: 'photo', images: [`/IG/post-6.jpeg`], caption: 'To many more destinations, bray.', likes: 61, date: '6 AGUSTUS 2025' },
-  { id: 5, type: 'photo', images: [`/IG/post-5.jpeg`], caption: 'Takut (komdis)', likes: 47, date: '20 JULI 2025' },
-  { id: 4, type: 'photo', images: [`/IG/post-4.jpeg`], caption: 'Hari kelahiran pancasila', likes: 52, date: '1 JUNI 2025' },
-  { id: 3, type: 'photo', images: [`/IG/post-3.jpeg`], caption: 'Satu ditambah satu sama dengan gila', likes: 58, date: '17 APRIL 2025' },
-  { id: 2, type: 'photo', images: [`/IG/post-2.jpeg`], caption: 'Gober (godin bersama)', likes: 44, date: '15 MARET 2025' },
-  { id: 1, type: 'photo', images: [`/IG/post-1.jpeg`], caption: 'Selalu ingin kembali ke Yogyarkarta.', likes: 39, date: '24 DESEMBER 2024' },
+  { id: 6, type: 'photo', images: [`/IG/post-6.jpeg`], caption: 'To many more destinations, bray.', likes: 61, at: '2025-08-06' },
+  { id: 5, type: 'photo', images: [`/IG/post-5.jpeg`], caption: 'Takut (komdis)', likes: 47, at: '2025-07-20' },
+  { id: 4, type: 'photo', images: [`/IG/post-4.jpeg`], caption: 'Hari kelahiran pancasila', likes: 52, at: '2025-06-01' },
+  { id: 3, type: 'photo', images: [`/IG/post-3.jpeg`], caption: 'Satu ditambah satu sama dengan gila', likes: 58, at: '2025-04-17' },
+  { id: 2, type: 'photo', images: [`/IG/post-2.jpeg`], caption: 'Gober (godin bersama)', likes: 44, at: '2025-03-15' },
+  { id: 1, type: 'photo', images: [`/IG/post-1.jpeg`], caption: 'Selalu ingin kembali ke Yogyarkarta.', likes: 39, at: '2024-12-24' },
 ];
 
 // Gambar dengan cadangan: kalau file belum ada, tampil kotak gelap + teks (bukan ikon rusak)
@@ -57,6 +58,7 @@ const HEART = 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0
 
 // ====== PRATINJAU POSTINGAN ======
 function PostViewer({ post, onClose }: { post: Post; onClose: () => void }) {
+  const after = useAfter();
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
   const [slide, setSlide] = useState(0);
@@ -116,7 +118,7 @@ function PostViewer({ post, onClose }: { post: Post; onClose: () => void }) {
         <div className="px-3.5 pb-8 pt-1.5 text-[13.5px] leading-snug">
           <div className="font-bold">{post.likes + (liked ? 1 : 0)} likes</div>
           {post.caption && <p className="mt-0.5"><b>{PROFILE.username}</b> {post.caption}</p>}
-          <div className="mt-1.5 text-[11px] tracking-wide text-zinc-400">{post.date}</div>
+          <div className="mt-1.5 text-[11px] tracking-wide text-zinc-400">{fmtID(parseISO(post.at), after).toUpperCase()}</div>
         </div>
       </div>
     </div>

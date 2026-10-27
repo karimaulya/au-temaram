@@ -25,7 +25,7 @@ export default function Maps() {
           </g>
         ))}
       </svg>
-      <div className="relative z-10 mx-3 mt-1 flex items-center gap-2 rounded-xl bg-black/95 px-3 py-2.5 text-[15px] text-zinc-400 shadow-md">🔍 Search Maps</div>
+      <div className="relative z-10 mx-3 mt-1 flex items-center gap-2 rounded-xl bg-black/95 px-3 py-2.5 text-[15px] text-zinc-400 shadow-md">Search Maps</div>
       {pin && (
         <div className="relative z-10 mx-3 mt-auto mb-2 rounded-2xl bg-zinc-900 p-4 shadow-xl">
           <div className="text-[18px] font-bold">{pin.name}</div>
