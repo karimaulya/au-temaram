@@ -245,7 +245,8 @@ function makeAudio(name: string, loop: boolean, volume = 1) {
   load();
   return a;
 }
-const stopSfx = (name: string) => { loops.get(name)?.pause(); loops.delete(name); };
+// eslint-disable-next-line react-refresh/only-export-components
+export const stopSfx = (name: string) => { loops.get(name)?.pause(); loops.delete(name); };
 /** Ubah volume suara yang sedang loop pelan-pelan (mis. monitor ICU dikecilkan setelah berita dibaca). */
 function fadeSfx(name: string, to: number, ms = 2000) {
   const a = loops.get(name);
