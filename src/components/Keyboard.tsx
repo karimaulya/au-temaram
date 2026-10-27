@@ -18,10 +18,16 @@ export default function Keyboard({ lastChar, tick, canSend, onSend }: Props) {
   const [pressed, setPressed] = useState<{ id: string; label: string } | null>(null);
 
   useEffect(() => {
-    if (!lastChar || tick === 0) { setPressed(null); return; }
-    setPressed({ id: keyIdOf(lastChar), label: lastChar });
-    const t = window.setTimeout(() => setPressed(null), 100);
-    return () => clearTimeout(t);
+    const timer = window.setTimeout(() => {
+      setPressed(lastChar && tick !== 0 ? { id: keyIdOf(lastChar), label: lastChar } : null);
+    }, 0);
+    const clearTimer = lastChar && tick !== 0
+      ? window.setTimeout(() => setPressed(null), 100)
+      : undefined;
+    return () => {
+      clearTimeout(timer);
+      if (clearTimer !== undefined) clearTimeout(clearTimer);
+    };
   }, [tick, lastChar]);
 
   const shiftOn = !!pressed && /[A-Z]/.test(pressed.label);
