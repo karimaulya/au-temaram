@@ -75,7 +75,6 @@ export default function Twitter() {
         </div>
         <div className="relative px-4">
           <Avatar className="-mt-10 h-20 w-20 rounded-full border-4 border-black text-[32px]" />
-          <button className="absolute right-4 top-3 rounded-full border border-zinc-700 px-4 py-1.5 text-[14px] font-bold">Edit profile</button>
 
           <div className="mt-2 text-[20px] font-extrabold leading-tight">{ME.name}</div>
           <div className="text-[15px] text-zinc-400">@{ME.handle}</div>

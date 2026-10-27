@@ -20,7 +20,7 @@ const IC: Record<string, string> = {
 const GROUPS: { label: string; icon: string; color: string; toggle?: boolean; value?: string }[][] = [
   [{ label: 'Airplane Mode', icon: 'plane', color: 'bg-orange-500', toggle: true }, { label: 'Wi-Fi', icon: 'wifi', color: 'bg-blue-500', value: 'Not Connected' }, { label: 'Bluetooth', icon: 'bt', color: 'bg-blue-500', value: 'On' }, { label: 'Cellular', icon: 'cell', color: 'bg-green-500' }],
   [{ label: 'Notifications', icon: 'bell', color: 'bg-red-500' }, { label: 'Sounds & Haptics', icon: 'vol', color: 'bg-pink-500' }, { label: 'Focus', icon: 'moon', color: 'bg-indigo-500' }, { label: 'Screen Time', icon: 'hour', color: 'bg-indigo-500' }],
-  [{ label: 'General', icon: 'gear', color: 'bg-gray-500' }, { label: 'Display & Brightness', icon: 'sun', color: 'bg-blue-500' }, { label: 'Battery', icon: 'batt', color: 'bg-green-500', value: '23%' }, { label: 'Privacy & Security', icon: 'hand', color: 'bg-blue-500' }],
+  [{ label: 'General', icon: 'gear', color: 'bg-gray-500' }, { label: 'Display & Brightness', icon: 'sun', color: 'bg-blue-500' }, { label: 'Battery', icon: 'batt', color: 'bg-green-500', value: '98%' }, { label: 'Privacy & Security', icon: 'hand', color: 'bg-blue-500' }],
 ];
 const Chev = () => <svg width="9" height="15" viewBox="0 0 9 15" fill="none" stroke="#636366" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m1.5 1.5 6 6-6 6" /></svg>;
 
